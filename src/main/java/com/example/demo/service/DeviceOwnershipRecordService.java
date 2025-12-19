@@ -1,24 +1,17 @@
-package com.example.demo.service;
-
-import java.util.List;
-import org.springframework.stereotype.Service;
-import com.example.demo.entity.*;
-import com.example.demo.repository.*;
-
 @Service
-public class DeviceOwnershipRecordService {
+public class DeviceOwnershipService {
 
-    private final DeviceOwnershipRecordRepository repo;
+    private final DeviceOwnershipRecordRepository repository;
 
-    public DeviceOwnershipRecordService(DeviceOwnershipRecordRepository repo) {
-        this.repo = repo;
+    public DeviceOwnershipService(DeviceOwnershipRecordRepository repository) {
+        this.repository = repository;
     }
 
-    public DeviceOwnershipRecordEntity save(DeviceOwnershipRecordEntity e) {
-        return repo.save(e);
-    }
-
-    public List<DeviceOwnershipRecordEntity> getAll() {
-        return repo.findAll();
+    public DeviceOwnershipRecord getBySerial(String serial) {
+        DeviceOwnershipRecord record = repository.findBySerialNumber(serial);
+        if (record == null) {
+            throw new IllegalArgumentException("Device not found");
+        }
+        return record;
     }
 }
