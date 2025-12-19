@@ -1,23 +1,28 @@
-package com.example.demo.entity;
+;
+private String ownerEmail;
+private LocalDate purchaseDate;
+private LocalDate warrantyExpiration;
+private boolean active;
+package com.example.demo.model;
+
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
+
 
 @Entity
-public class DeviceOwnershipRecordEntity {
+public class DeviceOwnershipRecord {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String deviceId;
-    private String ownerName;
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getDeviceId() { return deviceId; }
-    public void setDeviceId(String deviceId) { this.deviceId = deviceId; }
+@Column(unique = true, nullable = false)
+private String serialNumber;
 
-    public String getOwnerName() { return ownerName; }
-    public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
+
+private String ownerName
+// getters & setters
 }
