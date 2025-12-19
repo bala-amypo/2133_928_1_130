@@ -1,7 +1,25 @@
 @Service
 public class UserService {
-    private final UserRepository repo;
-    public UserService(UserRepository repo){ this.repo = repo; }
-    public UserEntity save(UserEntity e){ return repo.save(e); }
-    public List<UserEntity> getAll(){ return repo.findAll(); }
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public User register(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+    public User authenticate(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+        return user;
+    }
 }
