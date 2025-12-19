@@ -1,23 +1,32 @@
-package com.example.demo.entity;
+package com.example.demo.model;
+
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 
 @Entity
-public class FraudAlertRecordEntity {
+public class FraudAlertRecord {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String alertType;
-    private String description;
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getAlertType() { return alertType; }
-    public void setAlertType(String alertType) { this.alertType = alertType; }
+private Long claimId;
+private String serialNumber;
+private String alertType;
+private String severity;
+private String message;
+private LocalDateTime alertDate;
+private boolean resolved;
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+
+@PrePersist
+void onCreate() {
+this.alertDate = LocalDateTime.now();
+this.resolved = false;
+}
+// getters & setters
 }
