@@ -1,7 +1,9 @@
+// WarrantyClaimRecordRepository.java
 package com.example.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.entity.WarrantyClaimRecordEntity;
+import com.example.demo.entity.WarrantyClaimRecord;
 
 public interface WarrantyClaimRecordRepository
-        extends JpaRepository<WarrantyClaimRecordEntity, Long> {}
+        extends JpaRepository<WarrantyClaimRecord, Long> {
+}

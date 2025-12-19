@@ -1,7 +1,9 @@
+// FraudAlertRecordRepository.java
 package com.example.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.entity.FraudAlertRecordEntity;
+import com.example.demo.entity.FraudAlertRecord;
 
 public interface FraudAlertRecordRepository
-        extends JpaRepository<FraudAlertRecordEntity, Long> {}
+        extends JpaRepository<FraudAlertRecord, Long> {
+}
