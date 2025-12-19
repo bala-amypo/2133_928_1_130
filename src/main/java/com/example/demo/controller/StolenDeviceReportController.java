@@ -1,49 +1,17 @@
-// StolenDeviceReport.java
-package com.example.demo.entity;
+@RestController
+@RequestMapping("/api/stolen")
+public class StolenDeviceController {
 
-import jakarta.persistence.*;
+    private final StolenDeviceService stolenDeviceService;
 
-@Entity
-@Table(name = "stolen_device_reports")
-public class StolenDeviceReport {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String deviceId;
-    private String reportStatus;
-    private String reportedBy;
-
-    public Long getId() {
-        return id;
+    public StolenDeviceController(StolenDeviceService stolenDeviceService) {
+        this.stolenDeviceService = stolenDeviceService;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @GetMapping("/{serialNumber}")
+    public boolean isStolen(
+            @PathVariable String serialNumber) {
 
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public String getReportStatus() {
-        return reportStatus;
-    }
-
-    public void setReportStatus(String reportStatus) {
-        this.reportStatus = reportStatus;
-    }
-
-    public String getReportedBy() {
-        return reportedBy;
-    }
-
-    public void setReportedBy(String reportedBy) {
-        this.reportedBy = reportedBy;
+        return stolenDeviceService.isStolen(serialNumber);
     }
 }

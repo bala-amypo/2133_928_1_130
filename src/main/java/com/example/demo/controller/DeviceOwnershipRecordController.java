@@ -1,49 +1,17 @@
-// DeviceOwnershipRecord.java
-package com.example.demo.entity;
+@RestController
+@RequestMapping("/api/devices")
+public class DeviceOwnershipController {
 
-import jakarta.persistence.*;
+    private final DeviceOwnershipService deviceOwnershipService;
 
-@Entity
-@Table(name = "device_ownership_records")
-public class DeviceOwnershipRecord {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String deviceId;
-    private String ownerName;
-    private String ownershipStatus;
-
-    public Long getId() {
-        return id;
+    public DeviceOwnershipController(DeviceOwnershipService deviceOwnershipService) {
+        this.deviceOwnershipService = deviceOwnershipService;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @GetMapping("/{serialNumber}")
+    public DeviceOwnershipRecord getDevice(
+            @PathVariable String serialNumber) {
 
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public String getOwnerName() {
-        return ownerName;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
-
-    public String getOwnershipStatus() {
-        return ownershipStatus;
-    }
-
-    public void setOwnershipStatus(String ownershipStatus) {
-        this.ownershipStatus = ownershipStatus;
+        return deviceOwnershipService.getBySerial(serialNumber);
     }
 }
