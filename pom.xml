@@ -57,12 +57,6 @@
             <version>2.3.0</version>
         </dependency>
 
-        <!-- External Tomcat (WAR deployment) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- Spring Boot Test (JUnit + Mockito) -->
         <dependency>
