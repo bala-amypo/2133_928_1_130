@@ -1,23 +1,33 @@
-package com.example.demo.entity;
+package com.example.demo.model;
+
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 
 @Entity
-public class WarrantyClaimRecordEntity {
+public class WarrantyClaimRecord {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String productName;
-    private String claimStatus;
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getProductName() { return productName; }
-    public void setProductName(String productName) { this.productName = productName; }
+private String serialNumber;
+private String claimantName;
+private String claimantEmail;
+private String claimReason;
 
-    public String getClaimStatus() { return claimStatus; }
-    public void setClaimStatus(String claimStatus) { this.claimStatus = claimStatus; }
+
+private LocalDateTime submittedAt;
+private String status;
+
+
+@PrePersist
+void onCreate() {
+this.submittedAt = LocalDateTime.now();
+this.status = "PENDING";
+}
+// getters & setters
 }

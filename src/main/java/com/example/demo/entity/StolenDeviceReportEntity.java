@@ -1,23 +1,28 @@
-package com.example.demo.entity;
+package com.example.demo.model;
+
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 
 @Entity
-public class StolenDeviceReportEntity {
+public class StolenDeviceReport {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String deviceId;
-    private String location;
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getDeviceId() { return deviceId; }
-    public void setDeviceId(String deviceId) { this.deviceId = deviceId; }
+private String serialNumber;
+private String reportedBy;
+private LocalDateTime reportDate;
+private String details;
 
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
+
+@PrePersist
+void onCreate() {
+this.reportDate = LocalDateTime.now();
+}
+// getters & setters
 }

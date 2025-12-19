@@ -1,19 +1,24 @@
-package com.example.demo.entity;
+package com.example.demo.model;
+
 
 import jakarta.persistence.*;
 
+
 @Entity
-public class FraudRuleEntity {
+public class FraudRule {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String ruleName;
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getRuleName() { return ruleName; }
-    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
+@Column(unique = true)
+private String ruleCode;
+
+
+private String description;
+private String ruleType;
+private boolean active;
+// getters & setters
 }
