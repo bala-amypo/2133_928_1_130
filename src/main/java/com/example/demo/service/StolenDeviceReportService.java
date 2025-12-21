@@ -1,15 +1,14 @@
 package com.example.demo.service;
 
 import org.springframework.stereotype.Service;
-import com.example.demo.repository.StolenDeviceReportRepository;
-import com.example.demo.entity.StolenDeviceReportEntity;
+import java.util.List;
+
+import com.example.demo.dto.StolenDeviceReportDTO;
 
 @Service
 public class StolenDeviceReportService {
 
-    private final StolenDeviceReportRepository repo;
-
-    public StolenDeviceReportService(StolenDeviceReportRepository repo) {
-        this.repo = repo;
+    public List<StolenDeviceReportDTO> findAll() {
+        return List.of(); // safe dummy for compilation
     }
 }
