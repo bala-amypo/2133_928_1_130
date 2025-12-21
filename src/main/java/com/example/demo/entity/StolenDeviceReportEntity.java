@@ -1,24 +1,14 @@
-package com.example.demo.entity;
+package com.example.demo.service;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Entity
-public class StolenDeviceReportEntity {
+import com.example.demo.dto.StolenDeviceReportDTO;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Service
+public class StolenDeviceReportService {
 
-    private String serialNumber;
-    private LocalDateTime reportedAt;
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getSerialNumber() { return serialNumber; }
-    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
-
-    public LocalDateTime getReportedAt() { return reportedAt; }
-    public void setReportedAt(LocalDateTime reportedAt) { this.reportedAt = reportedAt; }
+    public List<StolenDeviceReportDTO> findAll() {
+        return List.of(); // dummy data for now
+    }
 }
