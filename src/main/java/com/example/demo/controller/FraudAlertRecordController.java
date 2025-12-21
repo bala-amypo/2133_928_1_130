@@ -1,10 +1,10 @@
 @RestController
 @RequestMapping("/api/fraud-alerts")
-public class FraudAlertController {
+public class FraudAlertRecordController {
 
     private final FraudAlertService fraudAlertService;
 
-    public FraudAlertController(FraudAlertService fraudAlertService) {
+    public FraudAlertRecordController(FraudAlertService fraudAlertService) {
         this.fraudAlertService = fraudAlertService;
     }
 

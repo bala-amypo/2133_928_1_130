@@ -1,10 +1,10 @@
 @RestController
 @RequestMapping("/api/claims")
-public class WarrantyClaimController {
+public class WarrantyClaimRecordController {
 
     private final WarrantyClaimService service;
 
-    public WarrantyClaimController(WarrantyClaimService service) {
+    public WarrantyClaimRecordController(WarrantyClaimService service) {
         this.service = service;
     }
 

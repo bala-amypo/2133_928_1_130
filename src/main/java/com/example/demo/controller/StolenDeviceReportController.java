@@ -1,10 +1,10 @@
 @RestController
 @RequestMapping("/api/stolen")
-public class StolenDeviceController {
+public class StolenDeviceReportController {
 
     private final StolenDeviceService stolenDeviceService;
 
-    public StolenDeviceController(StolenDeviceService stolenDeviceService) {
+    public StolenDeviceReportController(StolenDeviceService stolenDeviceService) {
         this.stolenDeviceService = stolenDeviceService;
     }
 
