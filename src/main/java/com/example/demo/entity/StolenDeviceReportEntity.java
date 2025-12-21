@@ -11,31 +11,19 @@ public class StolenDeviceReportEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String serialNumber;
 
-    private LocalDateTime reportedAt;
+    private String reportedBy;
+    private String details;
+    private LocalDateTime reportDate;
 
-    public Long getId() {
-        return id;
+    @PrePersist
+    void onCreate() {
+        reportDate = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public StolenDeviceReportEntity() {}
 
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public LocalDateTime getReportedAt() {
-        return reportedAt;
-    }
-
-    public void setReportedAt(LocalDateTime reportedAt) {
-        this.reportedAt = reportedAt;
-    }
+    // getters & setters
 }

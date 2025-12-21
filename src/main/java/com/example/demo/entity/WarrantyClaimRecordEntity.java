@@ -4,30 +4,29 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "warranty_claim_records")
 public class WarrantyClaimRecordEntity {
-
-    public enum Status { PENDING, APPROVED, REJECTED }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String serialNumber;
+    private String claimantName;
+    private String claimantEmail;
+    private String claimReason;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
+    private String status = "PENDING";
+    private LocalDateTime submittedAt;
     private LocalDateTime createdAt;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @PrePersist
+    void onCreate() {
+        submittedAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
+    }
 
-    public String getSerialNumber() { return serialNumber; }
-    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
+    public WarrantyClaimRecordEntity() {}
 
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    // getters & setters
 }

@@ -2,33 +2,33 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "device_ownership_records")
 public class DeviceOwnershipRecordEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String serialNumber;
 
     private String ownerName;
+    private String ownerEmail;
     private LocalDate purchaseDate;
-    private LocalDate warrantyEndDate;
+    private LocalDate warrantyExpiration;
+    private Boolean active = true;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    private LocalDateTime createdAt;
 
-    public String getSerialNumber() { return serialNumber; }
-    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
+    @PrePersist
+    void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
-    public String getOwnerName() { return ownerName; }
-    public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
+    public DeviceOwnershipRecordEntity() {}
 
-    public LocalDate getPurchaseDate() { return purchaseDate; }
-    public void setPurchaseDate(LocalDate purchaseDate) { this.purchaseDate = purchaseDate; }
-
-    public LocalDate getWarrantyEndDate() { return warrantyEndDate; }
-    public void setWarrantyEndDate(LocalDate warrantyEndDate) { this.warrantyEndDate = warrantyEndDate; }
+    // getters & setters
 }
