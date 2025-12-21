@@ -1,10 +1,10 @@
 @RestController
 @RequestMapping("/api/devices")
-public class DeviceOwnershipController {
+public class DeviceOwnershipRecordController {
 
     private final DeviceOwnershipService deviceOwnershipService;
 
-    public DeviceOwnershipController(DeviceOwnershipService deviceOwnershipService) {
+    public DeviceOwnershipRecordController(DeviceOwnershipService deviceOwnershipService) {
         this.deviceOwnershipService = deviceOwnershipService;
     }
 
