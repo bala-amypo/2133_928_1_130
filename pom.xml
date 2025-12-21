@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>device-fraud-management</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Device Fraud Management</name>
     <description>Spring Boot project for Device Fraud Management</description>
@@ -15,7 +15,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <properties>
@@ -35,7 +35,7 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- H2 Database (for testing, replace with MySQL/PostgreSQL if needed) -->
+        <!-- H2 Database (development/testing) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -48,7 +48,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
-        <!-- JWT (JSON Web Token) -->
+        <!-- JWT Dependencies -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -67,11 +67,10 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Swagger/OpenAPI -->
+        <!-- Validation -->
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.2.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <!-- Lombok -->
@@ -81,10 +80,11 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Validation -->
+        <!-- Swagger / OpenAPI -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.2.0</version>
         </dependency>
 
         <!-- Testing -->
