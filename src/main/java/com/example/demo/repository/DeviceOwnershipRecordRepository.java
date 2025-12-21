@@ -1,6 +1,7 @@
-public interface DeviceOwnershipRecordRepository
-        extends JpaRepository<DeviceOwnershipRecord, Long> {
+package com.example.demo.repository;
 
-    DeviceOwnershipRecord existsBySerialNumber(String serialNumber);
-    DeviceOwnershipRecord findBySerialNumber(String serialNumber);
-}
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.entity.*;
+
+public interface DeviceOwnershipRecordRepository
+        extends JpaRepository<DeviceOwnershipRecordEntity, Long> {}

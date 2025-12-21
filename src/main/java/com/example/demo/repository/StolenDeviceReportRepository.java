@@ -1,5 +1,7 @@
-public interface StolenDeviceReportRepository
-        extends JpaRepository<StolenDeviceReport, Long> {
+package com.example.demo.repository;
 
-    StolenDeviceReport findBySerialNumber(String serialNumber);
-}
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.entity.StolenDeviceReportEntity;
+
+public interface StolenDeviceReportRepository
+        extends JpaRepository<StolenDeviceReportEntity, Long> {}
