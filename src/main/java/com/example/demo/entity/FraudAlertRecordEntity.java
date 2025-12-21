@@ -26,5 +26,6 @@ public class FraudAlertRecordEntity {
 
     public FraudAlertRecordEntity() {}
 
-    // getters & setters
+    public Long getId() { return id; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }

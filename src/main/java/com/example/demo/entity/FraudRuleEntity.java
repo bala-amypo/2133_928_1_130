@@ -14,8 +14,8 @@ public class FraudRuleEntity {
     @Column(unique = true)
     private String ruleCode;
 
-    private String description;
     private String ruleType;
+    private String description;
     private Boolean active = true;
     private LocalDateTime createdAt;
 
@@ -26,5 +26,10 @@ public class FraudRuleEntity {
 
     public FraudRuleEntity() {}
 
-    // getters & setters
+    public Long getId() { return id; }
+    public String getRuleCode() { return ruleCode; }
+    public Boolean getActive() { return active; }
+
+    public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
+    public void setActive(Boolean active) { this.active = active; }
 }

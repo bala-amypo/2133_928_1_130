@@ -15,8 +15,8 @@ public class WarrantyClaimRecordEntity {
     private String claimantName;
     private String claimantEmail;
     private String claimReason;
-
     private String status = "PENDING";
+
     private LocalDateTime submittedAt;
     private LocalDateTime createdAt;
 
@@ -28,5 +28,12 @@ public class WarrantyClaimRecordEntity {
 
     public WarrantyClaimRecordEntity() {}
 
-    // getters & setters
+    public Long getId() { return id; }
+    public String getSerialNumber() { return serialNumber; }
+    public String getClaimReason() { return claimReason; }
+    public String getStatus() { return status; }
+
+    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
+    public void setClaimReason(String claimReason) { this.claimReason = claimReason; }
+    public void setStatus(String status) { this.status = status; }
 }

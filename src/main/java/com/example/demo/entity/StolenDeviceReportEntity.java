@@ -11,9 +11,7 @@ public class StolenDeviceReportEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String serialNumber;
-
     private String reportedBy;
     private String details;
     private LocalDateTime reportDate;
@@ -25,5 +23,6 @@ public class StolenDeviceReportEntity {
 
     public StolenDeviceReportEntity() {}
 
-    // getters & setters
+    public String getSerialNumber() { return serialNumber; }
+    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
 }
