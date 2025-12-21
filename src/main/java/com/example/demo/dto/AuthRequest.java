@@ -1,26 +1,12 @@
-package com.example.demo.dto;
+package com.example.demo;
 
-public class AuthRequest {
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-    private String username;
-    private String password;
+@SpringBootApplication
+public class DeviceFraudManagementApplication {
 
-    public AuthRequest() {
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public static void main(String[] args) {
+        SpringApplication.run(DeviceFraudManagementApplication.class, args);
     }
 }
