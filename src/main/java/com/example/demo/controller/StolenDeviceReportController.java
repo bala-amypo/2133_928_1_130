@@ -1,17 +1,22 @@
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.service.StolenDeviceReportService;
+import com.example.demo.entity.StolenDeviceReportEntity;
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/stolen")
+@RequestMapping("/stolen-devices")
 public class StolenDeviceReportController {
 
-    private final StolenDeviceService stolenDeviceService;
+    private final StolenDeviceReportService service;
 
-    public StolenDeviceReportController(StolenDeviceService stolenDeviceService) {
-        this.stolenDeviceService = stolenDeviceService;
+    public StolenDeviceReportController(StolenDeviceReportService service) {
+        this.service = service;
     }
 
-    @GetMapping("/{serialNumber}")
-    public boolean isStolen(
-            @PathVariable String serialNumber) {
-
-        return stolenDeviceService.isStolen(serialNumber);
+    @GetMapping
+    public List<StolenDeviceReportEntity> getAll() {
+        return service.findAll();
     }
 }
