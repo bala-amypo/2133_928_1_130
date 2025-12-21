@@ -1,15 +1,21 @@
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.service.WarrantyClaimRecordService;
+import com.example.demo.entity.WarrantyClaimRecordEntity;
+
 @RestController
-@RequestMapping("/api/claims")
+@RequestMapping("/warranty-claims")
 public class WarrantyClaimRecordController {
 
-    private final WarrantyClaimService service;
+    private final WarrantyClaimRecordService service;
 
-    public WarrantyClaimRecordController(WarrantyClaimService service) {
+    public WarrantyClaimRecordController(WarrantyClaimRecordService service) {
         this.service = service;
     }
 
     @PostMapping
-    public WarrantyClaimRecord submit(@RequestBody WarrantyClaimRecord claim) {
-        return service.submitClaim(claim);
+    public WarrantyClaimRecordEntity submit(@RequestBody WarrantyClaimRecordEntity claim) {
+        return service.submit(claim);
     }
 }

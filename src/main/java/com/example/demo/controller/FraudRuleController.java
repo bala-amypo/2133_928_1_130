@@ -1,33 +1,22 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.FraudRule;
-import com.example.demo.service.FraudRuleService;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.demo.service.FraudRuleService;
+import com.example.demo.entity.FraudRuleEntity;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/fraud-rules")
+@RequestMapping("/fraud-rules")
 public class FraudRuleController {
 
-    private final FraudRuleService fraudRuleService;
+    private final FraudRuleService service;
 
-    public FraudRuleController(FraudRuleService fraudRuleService) {
-        this.fraudRuleService = fraudRuleService;
-    }
-
-    @PostMapping
-    public FraudRule createRule(@RequestBody FraudRule rule) {
-        return fraudRuleService.save(rule);
+    public FraudRuleController(FraudRuleService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<FraudRule> getAllRules() {
-        return fraudRuleService.getAllRules();
-    }
-
-    @GetMapping("/active")
-    public List<FraudRule> getActiveRules() {
-        return fraudRuleService.getActiveRules();
+    public List<FraudRuleEntity> getAll() {
+        return service.findAll();
     }
 }
