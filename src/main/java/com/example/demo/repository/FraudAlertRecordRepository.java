@@ -4,7 +4,7 @@ import com.example.demo.entity.FraudAlertRecordEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-@Repository
+
 public interface FraudAlertRecordRepository
         extends JpaRepository<FraudAlertRecordEntity, Long> {
 
