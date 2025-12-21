@@ -19,6 +19,7 @@ public class DeviceOwnershipServiceImpl implements DeviceOwnershipRecordService 
 
     @Override
     public DeviceOwnershipRecordEntity registerDevice(DeviceOwnershipRecordEntity device) {
+
         if (repository.existsBySerialNumber(device.getSerialNumber())) {
             throw new IllegalArgumentException("Serial number already exists");
         }
@@ -27,6 +28,7 @@ public class DeviceOwnershipServiceImpl implements DeviceOwnershipRecordService 
 
     @Override
     public DeviceOwnershipRecordEntity getBySerial(String serialNumber) {
+
         return repository.findBySerialNumber(serialNumber)
                 .orElseThrow(() -> new NoSuchElementException("Device not found"));
     }
@@ -38,8 +40,10 @@ public class DeviceOwnershipServiceImpl implements DeviceOwnershipRecordService 
 
     @Override
     public DeviceOwnershipRecordEntity updateDeviceStatus(Long id, boolean active) {
+
         DeviceOwnershipRecordEntity device = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Device not found"));
+
         device.setActive(active);
         return repository.save(device);
     }

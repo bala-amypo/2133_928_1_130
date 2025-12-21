@@ -5,6 +5,7 @@ import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -40,7 +41,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity loginUser(LoginRequest request) {
-
         return userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
     }

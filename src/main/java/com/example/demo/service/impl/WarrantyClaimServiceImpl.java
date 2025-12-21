@@ -4,6 +4,7 @@ import com.example.demo.entity.DeviceOwnershipRecordEntity;
 import com.example.demo.entity.WarrantyClaimRecordEntity;
 import com.example.demo.repository.*;
 import com.example.demo.service.WarrantyClaimRecordService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +19,6 @@ public class WarrantyClaimServiceImpl implements WarrantyClaimRecordService {
     private final FraudAlertRecordRepository alertRepository;
     private final FraudRuleRepository fraudRuleRepository;
 
-    // ⚠️ EXACT constructor order (test critical)
     public WarrantyClaimServiceImpl(
             WarrantyClaimRecordRepository claimRepository,
             DeviceOwnershipRecordRepository deviceRepository,
