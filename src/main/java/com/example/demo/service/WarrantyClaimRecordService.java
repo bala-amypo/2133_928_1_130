@@ -1,22 +1,17 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
-import com.example.demo.repository.WarrantyClaimRecordRepository;
 import com.example.demo.entity.WarrantyClaimRecordEntity;
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Service
-public class WarrantyClaimRecordService {
+public interface WarrantyClaimRecordService {
 
-    private final WarrantyClaimRecordRepository repo;
+    WarrantyClaimRecordEntity submitClaim(WarrantyClaimRecordEntity claim);
 
-    public WarrantyClaimRecordService(WarrantyClaimRecordRepository repo) {
-        this.repo = repo;
-    }
+    WarrantyClaimRecordEntity updateClaimStatus(Long claimId, String status);
 
-    public WarrantyClaimRecordEntity submit(WarrantyClaimRecordEntity claim) {
-        claim.setStatus(WarrantyClaimRecordEntity.Status.PENDING);
-        claim.setCreatedAt(LocalDateTime.now());
-        return repo.save(claim);
-    }
+    WarrantyClaimRecordEntity getClaimById(Long id);
+
+    List<WarrantyClaimRecordEntity> getClaimsBySerial(String serialNumber);
+
+    List<WarrantyClaimRecordEntity> getAllClaims();
 }

@@ -1,20 +1,15 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
-import com.example.demo.repository.DeviceOwnershipRecordRepository;
 import com.example.demo.entity.DeviceOwnershipRecordEntity;
 import java.util.List;
 
-@Service
-public class DeviceOwnershipRecordService {
+public interface DeviceOwnershipRecordService {
 
-    private final DeviceOwnershipRecordRepository repo;
+    DeviceOwnershipRecordEntity registerDevice(DeviceOwnershipRecordEntity device);
 
-    public DeviceOwnershipRecordService(DeviceOwnershipRecordRepository repo) {
-        this.repo = repo;
-    }
+    DeviceOwnershipRecordEntity getBySerial(String serialNumber);
 
-    public List<DeviceOwnershipRecordEntity> findAll() {
-        return repo.findAll();
-    }
+    List<DeviceOwnershipRecordEntity> getAllDevices();
+
+    DeviceOwnershipRecordEntity updateDeviceStatus(Long id, boolean active);
 }

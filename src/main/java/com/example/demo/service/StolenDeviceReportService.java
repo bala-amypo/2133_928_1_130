@@ -1,21 +1,15 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
+import com.example.demo.entity.StolenDeviceReportEntity;
 import java.util.List;
 
-import com.example.demo.entity.StolenDeviceReportEntity;
-import com.example.demo.repository.StolenDeviceReportRepository;
+public interface StolenDeviceReportService {
 
-@Service
-public class StolenDeviceReportService {
+    StolenDeviceReportEntity reportStolen(StolenDeviceReportEntity report);
 
-    private final StolenDeviceReportRepository repo;
+    List<StolenDeviceReportEntity> getReportsBySerial(String serialNumber);
 
-    public StolenDeviceReportService(StolenDeviceReportRepository repo) {
-        this.repo = repo;
-    }
+    StolenDeviceReportEntity getReportById(Long id);
 
-    public List<StolenDeviceReportEntity> findAll() {
-        return repo.findAll();
-    }
+    List<StolenDeviceReportEntity> getAllReports();
 }

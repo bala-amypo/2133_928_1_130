@@ -1,20 +1,17 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
-import com.example.demo.repository.FraudRuleRepository;
 import com.example.demo.entity.FraudRuleEntity;
 import java.util.List;
 
-@Service
-public class FraudRuleService {
+public interface FraudRuleService {
 
-    private final FraudRuleRepository repo;
+    FraudRuleEntity createRule(FraudRuleEntity rule);
 
-    public FraudRuleService(FraudRuleRepository repo) {
-        this.repo = repo;
-    }
+    FraudRuleEntity updateRule(Long id, FraudRuleEntity updatedRule);
 
-    public List<FraudRuleEntity> findAll() {
-        return repo.findAll();
-    }
+    List<FraudRuleEntity> getActiveRules();
+
+    FraudRuleEntity getRuleByCode(String ruleCode);
+
+    List<FraudRuleEntity> getAllRules();
 }
