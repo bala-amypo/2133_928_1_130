@@ -32,4 +32,21 @@ public class FraudRuleEntity {
 
     public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
     public void setActive(Boolean active) { this.active = active; }
+
+    public String getRuleType() {
+    return ruleType;
+}
+
+public void setRuleType(String ruleType) {
+    this.ruleType = ruleType;
+}
+
+public String getDescription() {
+    return description;
+}
+
+public void setDescription(String description) {
+    this.description = description;
+}
+
 }
