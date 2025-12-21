@@ -1,9 +1,10 @@
 package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.*;
-import com.example.demo.service.StolenDeviceReportService;
-import com.example.demo.entity.StolenDeviceReportEntity;
 import java.util.List;
+
+import com.example.demo.entity.StolenDeviceReportEntity;
+import com.example.demo.service.StolenDeviceReportService;
 
 @RestController
 @RequestMapping("/stolen-devices")
