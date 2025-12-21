@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.FraudRuleEntity;
 import com.example.demo.repository.FraudRuleRepository;
 import com.example.demo.service.FraudRuleService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,7 +23,6 @@ public class FraudRuleServiceImpl implements FraudRuleService {
         if (repository.findByRuleCode(rule.getRuleCode()).isPresent()) {
             throw new IllegalArgumentException("Rule already exists");
         }
-
         return repository.save(rule);
     }
 
@@ -32,9 +32,9 @@ public class FraudRuleServiceImpl implements FraudRuleService {
         FraudRuleEntity rule = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Rule not found"));
 
-        rule.setActive(updatedRule.getActive());
         rule.setRuleType(updatedRule.getRuleType());
         rule.setDescription(updatedRule.getDescription());
+        rule.setActive(updatedRule.getActive());
 
         return repository.save(rule);
     }

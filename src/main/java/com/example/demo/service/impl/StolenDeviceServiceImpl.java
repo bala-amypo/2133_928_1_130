@@ -4,6 +4,7 @@ import com.example.demo.entity.StolenDeviceReportEntity;
 import com.example.demo.repository.DeviceOwnershipRecordRepository;
 import com.example.demo.repository.StolenDeviceReportRepository;
 import com.example.demo.service.StolenDeviceReportService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,7 +15,6 @@ public class StolenDeviceServiceImpl implements StolenDeviceReportService {
     private final StolenDeviceReportRepository stolenRepository;
     private final DeviceOwnershipRecordRepository deviceRepository;
 
-    // ⚠️ EXACT constructor order
     public StolenDeviceServiceImpl(
             StolenDeviceReportRepository stolenRepository,
             DeviceOwnershipRecordRepository deviceRepository) {
@@ -33,6 +33,7 @@ public class StolenDeviceServiceImpl implements StolenDeviceReportService {
 
     @Override
     public List<StolenDeviceReportEntity> getReportsBySerial(String serialNumber) {
+
         return stolenRepository.findBySerialNumber(serialNumber)
                 .map(List::of)
                 .orElse(List.of());

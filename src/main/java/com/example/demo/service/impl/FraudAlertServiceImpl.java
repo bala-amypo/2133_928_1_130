@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.entity.FraudAlertRecordEntity;
 import com.example.demo.repository.FraudAlertRecordRepository;
 import com.example.demo.service.FraudAlertRecordService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
