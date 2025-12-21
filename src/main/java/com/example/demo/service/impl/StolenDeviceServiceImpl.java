@@ -8,6 +8,7 @@ import com.example.demo.service.StolenDeviceReportService;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@Service
 public class StolenDeviceServiceImpl implements StolenDeviceReportService {
 
     private final StolenDeviceReportRepository stolenRepository;

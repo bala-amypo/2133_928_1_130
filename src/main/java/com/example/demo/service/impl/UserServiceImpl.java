@@ -9,6 +9,7 @@ import com.example.demo.service.UserService;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
