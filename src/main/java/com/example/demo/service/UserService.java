@@ -7,6 +7,8 @@ import com.example.demo.entity.UserEntity;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.exception.ResourceNotFoundException;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -23,8 +25,12 @@ public class UserService {
         return repo.save(user);
     }
 
-    public UserEntity findByUsername(String username) {
-        return repo.findByUsername(username)
+    public List<UserEntity> getAllUsers() {
+        return repo.findAll();
+    }
+
+    public UserEntity getUserById(Long id) {
+        return repo.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
     }
