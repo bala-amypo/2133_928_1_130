@@ -1,25 +1,30 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "fraud_rules")
 public class FraudRuleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String ruleName;
+    @Column(unique = true)
+    private String ruleCode;
 
     private String description;
+    private String ruleType;
+    private Boolean active = true;
+    private LocalDateTime createdAt;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @PrePersist
+    void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
-    public String getRuleName() { return ruleName; }
-    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
+    public FraudRuleEntity() {}
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    // getters & setters
 }

@@ -4,25 +4,27 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "fraud_alert_records")
 public class FraudAlertRecordEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long claimId;
     private String serialNumber;
-    private String reason;
-    private LocalDateTime createdAt;
+    private String alertType;
+    private String severity;
+    private String message;
+    private Boolean resolved = false;
+    private LocalDateTime alertDate;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @PrePersist
+    void onCreate() {
+        alertDate = LocalDateTime.now();
+    }
 
-    public String getSerialNumber() { return serialNumber; }
-    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
+    public FraudAlertRecordEntity() {}
 
-    public String getReason() { return reason; }
-    public void setReason(String reason) { this.reason = reason; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    // getters & setters
 }

@@ -1,7 +1,11 @@
 package com.example.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.demo.entity.*;
+import java.util.*;
 
 public interface DeviceOwnershipRecordRepository
-        extends JpaRepository<DeviceOwnershipRecordEntity, Long> {}
+        extends JpaRepository<DeviceOwnershipRecordEntity, Long> {
+
+    boolean existsBySerialNumber(String serialNumber);
+    Optional<DeviceOwnershipRecordEntity> findBySerialNumber(String serialNumber);
+}

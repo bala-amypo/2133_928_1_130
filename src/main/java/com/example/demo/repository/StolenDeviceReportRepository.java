@@ -1,11 +1,6 @@
-package com.example.demo.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import com.example.demo.entity.StolenDeviceReportEntity;
-
-@Repository
 public interface StolenDeviceReportRepository
         extends JpaRepository<StolenDeviceReportEntity, Long> {
+
+    boolean existsBySerialNumber(String serialNumber);
+    Optional<StolenDeviceReportEntity> findBySerialNumber(String serialNumber);
 }
