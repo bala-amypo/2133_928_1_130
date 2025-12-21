@@ -1,31 +1,12 @@
-package com.example.demo.dto;
+package com.example.demo;
 
-public class AuthResponse {
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-    private String message;
-    private String username;
+@SpringBootApplication
+public class DeviceFraudManagementApplication {
 
-    public AuthResponse() {
-    }
-
-    public AuthResponse(String message, String username) {
-        this.message = message;
-        this.username = username;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public static void main(String[] args) {
+        SpringApplication.run(DeviceFraudManagementApplication.class, args);
     }
 }
