@@ -1,13 +1,20 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+import com.example.demo.repository.FraudAlertRecordRepository;
+import com.example.demo.entity.FraudAlertRecordEntity;
+import java.util.List;
+
 @Service
-public class FraudAlertService {
+public class FraudAlertRecordService {
 
-    private final FraudAlertRecordRepository repository;
+    private final FraudAlertRecordRepository repo;
 
-    public FraudAlertService(FraudAlertRecordRepository repository) {
-        this.repository = repository;
+    public FraudAlertRecordService(FraudAlertRecordRepository repo) {
+        this.repo = repo;
     }
 
-    public List<FraudAlertRecord> getAllAlerts() {
-        return repository.findAll();
+    public List<FraudAlertRecordEntity> findAll() {
+        return repo.findAll();
     }
 }

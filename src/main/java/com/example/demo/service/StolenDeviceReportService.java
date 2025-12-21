@@ -1,16 +1,15 @@
+package com.example.demo.service;
+
+import org.springframework.stereotype.Service;
+import com.example.demo.repository.StolenDeviceReportRepository;
+import com.example.demo.entity.StolenDeviceReportEntity;
+
 @Service
-public class StolenDeviceService {
+public class StolenDeviceReportService {
 
-    private final StolenDeviceReportRepository stolenRepo;
-    private final DeviceOwnershipRecordRepository ownershipRepo;
+    private final StolenDeviceReportRepository repo;
 
-    public StolenDeviceService(StolenDeviceReportRepository stolenRepo,
-                               DeviceOwnershipRecordRepository ownershipRepo) {
-        this.stolenRepo = stolenRepo;
-        this.ownershipRepo = ownershipRepo;
-    }
-
-    public boolean isStolen(String serial) {
-        return stolenRepo.findBySerialNumber(serial) != null;
+    public StolenDeviceReportService(StolenDeviceReportRepository repo) {
+        this.repo = repo;
     }
 }

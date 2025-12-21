@@ -1,17 +1,22 @@
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.service.DeviceOwnershipRecordService;
+import com.example.demo.entity.DeviceOwnershipRecordEntity;
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/devices")
+@RequestMapping("/devices")
 public class DeviceOwnershipRecordController {
 
-    private final DeviceOwnershipService deviceOwnershipService;
+    private final DeviceOwnershipRecordService service;
 
-    public DeviceOwnershipRecordController(DeviceOwnershipService deviceOwnershipService) {
-        this.deviceOwnershipService = deviceOwnershipService;
+    public DeviceOwnershipRecordController(DeviceOwnershipRecordService service) {
+        this.service = service;
     }
 
-    @GetMapping("/{serialNumber}")
-    public DeviceOwnershipRecord getDevice(
-            @PathVariable String serialNumber) {
-
-        return deviceOwnershipService.getBySerial(serialNumber);
+    @GetMapping
+    public List<DeviceOwnershipRecordEntity> getAll() {
+        return service.findAll();
     }
 }

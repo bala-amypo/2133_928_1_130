@@ -1,15 +1,22 @@
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.*;
+import com.example.demo.service.FraudAlertRecordService;
+import com.example.demo.entity.FraudAlertRecordEntity;
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/fraud-alerts")
+@RequestMapping("/fraud-alerts")
 public class FraudAlertRecordController {
 
-    private final FraudAlertService fraudAlertService;
+    private final FraudAlertRecordService service;
 
-    public FraudAlertRecordController(FraudAlertService fraudAlertService) {
-        this.fraudAlertService = fraudAlertService;
+    public FraudAlertRecordController(FraudAlertRecordService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<FraudAlertRecord> getAlerts() {
-        return fraudAlertService.getAllAlerts();
+    public List<FraudAlertRecordEntity> getAll() {
+        return service.findAll();
     }
 }
