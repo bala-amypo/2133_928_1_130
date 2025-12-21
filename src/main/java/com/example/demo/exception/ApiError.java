@@ -10,8 +10,6 @@ public class ApiError {
     private String message;
     private String path;
 
-    // -------- Constructors --------
-
     public ApiError() {
         this.timestamp = LocalDateTime.now();
     }
@@ -23,8 +21,6 @@ public class ApiError {
         this.message = message;
         this.path = path;
     }
-
-    // -------- Getters & Setters --------
 
     public LocalDateTime getTimestamp() {
         return timestamp;
@@ -53,7 +49,7 @@ public class ApiError {
     public String getMessage() {
         return message;
     }
-    
+
     public void setMessage(String message) {
         this.message = message;
     }
@@ -61,7 +57,7 @@ public class ApiError {
     public String getPath() {
         return path;
     }
-    
+
     public void setPath(String path) {
         this.path = path;
     }

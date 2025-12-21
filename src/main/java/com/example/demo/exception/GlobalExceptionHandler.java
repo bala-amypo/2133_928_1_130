@@ -1,54 +1,32 @@
 package com.example.demo.exception;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiError> handleIllegalArgument(
-            IllegalArgumentException ex,
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiError> handleNotFound(
+            ResourceNotFoundException ex,
             HttpServletRequest request) {
 
         ApiError error = new ApiError(
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
                 ex.getMessage(),
                 request.getRequestURI()
         );
 
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiError> handleValidationError(
-            MethodArgumentNotValidException ex,
-            HttpServletRequest request) {
-
-        String message = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(err -> err.getField() + ": " + err.getDefaultMessage())
-                .findFirst()
-                .orElse("Validation error");
-
-        ApiError error = new ApiError(
-                HttpStatus.BAD_REQUEST.value(),
-                "Validation Failed",
-                message,
-                request.getRequestURI()
-        );
-
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiError> handleGenericException(
+    public ResponseEntity<ApiError> handleGeneral(
             Exception ex,
             HttpServletRequest request) {
 
