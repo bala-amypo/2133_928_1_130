@@ -1,10 +1,15 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.entity.UserEntity;
+import com.example.demo.entity.DeviceOwnershipRecordEntity;
+import java.util.List;
 
-public interface UserService {
-    UserEntity registerUser(RegisterRequest request);
-    UserEntity loginUser(LoginRequest request);
+public interface DeviceOwnershipRecordService {
+
+    DeviceOwnershipRecordEntity registerDevice(DeviceOwnershipRecordEntity device);
+
+    DeviceOwnershipRecordEntity getBySerial(String serialNumber);
+
+    List<DeviceOwnershipRecordEntity> getAllDevices();
+
+    DeviceOwnershipRecordEntity updateDeviceStatus(Long id, boolean active);
 }

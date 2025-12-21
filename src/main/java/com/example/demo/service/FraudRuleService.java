@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.FraudRuleEntity;
 import java.util.List;
 
+@Service
 public interface FraudRuleService {
 
     FraudRuleEntity createRule(FraudRuleEntity rule);

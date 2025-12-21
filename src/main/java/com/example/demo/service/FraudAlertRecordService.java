@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.FraudAlertRecordEntity;
 import java.util.List;
 
+@Service
 public interface FraudAlertRecordService {
 
     FraudAlertRecordEntity createAlert(FraudAlertRecordEntity alert);
