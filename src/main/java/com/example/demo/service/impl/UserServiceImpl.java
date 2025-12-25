@@ -1,52 +1,40 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.dto.AuthRequest;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.time.LocalDateTime;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-public User loginUser(AuthRequest request) {
-    return userRepository.findByEmail(request.getEmail())
-            .orElseThrow(() ->
-                    new RuntimeException("Invalid email or password"));
-}
-
-    @Override
     public User save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setCreatedAt(LocalDateTime.now());
         return userRepository.save(user);
     }
 
     @Override
-    public User getById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("User not found"));
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 
-  
     @Override
-public User findByEmail(String email) {
-    return userRepository.findByEmail(email)
-            .orElseThrow(() ->
-                    new RuntimeException("User not found"));
+    public User getById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public User loginUser(AuthRequest request) {
+        return userRepository.findByEmail(request.getEmail()).orElse(null);
     }
 }

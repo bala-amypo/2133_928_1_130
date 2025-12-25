@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,70 +14,80 @@ public class User {
     private Long id;
 
     private String name;
-    private String email;
-    private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles;
+    @Column(unique = true, nullable = false)
+    private String email;
+
+    private String password;
 
     private LocalDateTime createdAt;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<String> roles = new HashSet<>();
+
     public User() {}
 
-    public User(String name, String email, String password, Set<String> roles) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.roles = roles;
-        this.createdAt = LocalDateTime.now();
+    /* ===== BUILDER ===== */
+    public static Builder builder() {
+        return new Builder();
     }
 
-    // ---------- getters ----------
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getEmail() { return email; }
-    public String getPassword() { return password; }
-    public Set<String> getRoles() { return roles; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-
-    // ---------- setters ----------
-    public void setId(Long id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setEmail(String email) { this.email = email; }
-    public void setPassword(String password) { this.password = password; }
-    public void setRoles(Set<String> roles) { this.roles = roles; }
-
-    // ---------- builder ----------
-    public static Builder builder() { return new Builder(); }
-
     public static class Builder {
-        private String name;
-        private String email;
-        private String password;
-        private Set<String> roles;
+        private final User u = new User();
+
+        public Builder id(Long id) {
+            u.setId(id);
+            return this;
+        }
 
         public Builder name(String name) {
-            this.name = name;
+            u.setName(name);
             return this;
         }
 
         public Builder email(String email) {
-            this.email = email;
+            u.setEmail(email);
             return this;
         }
 
         public Builder password(String password) {
-            this.password = password;
+            u.setPassword(password);
             return this;
         }
 
         public Builder roles(Set<String> roles) {
-            this.roles = roles;
+            u.setRoles(roles);
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime t) {
+            u.setCreatedAt(t);
             return this;
         }
 
         public User build() {
-            return new User(name, email, password, roles);
+            return u;
         }
     }
+
+    /* ===== GETTERS / SETTERS ===== */
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public Set<String> getRoles() { return roles; }
+    public void setRoles(Set<String> roles) { this.roles = roles; }
 }
