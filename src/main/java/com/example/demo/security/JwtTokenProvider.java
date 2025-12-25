@@ -1,61 +1,83 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.security.Key;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
 public class JwtTokenProvider {
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final long validityInMilliseconds = 3600000; // 1h
-    
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expiration}")
+    private long validityInMs;
+
+    private Key key;
+
+    @PostConstruct
+    protected void init() {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
     public String createToken(Long userId, String email, Set<String> roles) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("userId", userId);
         claims.put("roles", roles);
-        
+
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMilliseconds);
-        
+        Date expiry = new Date(now.getTime() + validityInMs);
+
         return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(validity)
-            .signWith(key)
-            .compact();
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
-    
+
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (Exception e) {
             return false;
         }
     }
-    
+
     public String getEmail(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build()
-            .parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
-    
+
+    public Long getUserId(String token) {
+        return ((Number) Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("userId")).longValue();
+    }
+
     @SuppressWarnings("unchecked")
     public Set<String> getRoles(String token) {
-        Object roles = Jwts.parserBuilder().setSigningKey(key).build()
-            .parseClaimsJws(token).getBody().get("roles");
-        if (roles instanceof List) {
-            return new HashSet<>((List<String>) roles);
-        }
-        return (Set<String>) roles;
-    }
-    
-    public Long getUserId(String token) {
-        return Long.valueOf(Jwts.parserBuilder().setSigningKey(key).build()
-            .parseClaimsJws(token).getBody().get("userId").toString());
+        return (Set<String>) Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("roles");
     }
 }

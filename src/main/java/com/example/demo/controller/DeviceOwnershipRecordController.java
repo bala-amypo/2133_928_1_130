@@ -1,14 +1,43 @@
-
 package com.example.demo.controller;
 
-import com.example.demo.service.impl.DeviceOwnershipServiceImpl;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.model.DeviceOwnershipRecord;
+import com.example.demo.service.DeviceOwnershipService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/api/devices")
 public class DeviceOwnershipController {
-    private final DeviceOwnershipServiceImpl service;
-    
-    public DeviceOwnershipController(DeviceOwnershipServiceImpl service) {
+
+    private final DeviceOwnershipService service;
+
+    public DeviceOwnershipController(DeviceOwnershipService service) {
         this.service = service;
+    }
+
+    @PostMapping
+    public ResponseEntity<DeviceOwnershipRecord> create(
+            @RequestBody DeviceOwnershipRecord device) {
+        return ResponseEntity.ok(service.registerDevice(device));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<DeviceOwnershipRecord>> getAll() {
+        return ResponseEntity.ok(service.getAllDevices());
+    }
+
+    @GetMapping("/serial/{serial}")
+    public ResponseEntity<DeviceOwnershipRecord> getBySerial(
+            @PathVariable String serial) {
+        return ResponseEntity.ok(service.getBySerial(serial));
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<DeviceOwnershipRecord> updateStatus(
+            @PathVariable Long id,
+            @RequestParam boolean active) {
+        return ResponseEntity.ok(service.updateDeviceStatus(id, active));
     }
 }
