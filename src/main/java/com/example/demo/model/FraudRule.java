@@ -19,32 +19,100 @@ public class FraudRule {
 
     public FraudRule() {}
 
-    public void setId(long id) { this.id = id; }
-    public Long getId() { return id; }
+    /* ===== REQUIRED BY TESTS ===== */
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public static Builder builder() { return new Builder(); }
+    public Long getId() {
+        return id;
+    }
+
+    /* ===== BUILDER ===== */
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static class Builder {
         private final FraudRule r = new FraudRule();
 
-        public Builder id(Long id) { r.setId(id); return this; }
-        public Builder ruleCode(String s) { r.setRuleCode(s); return this; }
-        public Builder ruleType(String s) { r.setRuleType(s); return this; }
-        public FraudRule build() { return r; }
+        public Builder id(Long id) {
+            r.setId(id);
+            return this;
+        }
+
+        public Builder ruleCode(String ruleCode) {
+            r.setRuleCode(ruleCode);
+            return this;
+        }
+
+        public Builder ruleType(String ruleType) {
+            r.setRuleType(ruleType);
+            return this;
+        }
+
+        public Builder description(String description) {
+            r.setDescription(description);
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            r.setActive(active);
+            return this;
+        }
+
+        public FraudRule build() {
+            return r;
+        }
     }
 
-    public String getRuleCode() { return ruleCode; }
-    public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
+    /* ===== GETTERS / SETTERS ===== */
 
-    public String getRuleType() { return ruleType; }
-    public void setRuleType(String ruleType) { this.ruleType = ruleType; }
+    public String getRuleCode() {
+        return ruleCode;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setRuleCode(String ruleCode) {
+        this.ruleCode = ruleCode;
+    }
 
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public String getRuleType() {
+        return ruleType;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setRuleType(String ruleType) {
+        this.ruleType = ruleType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /* 🔑 CRITICAL PART (FIX) */
+
+    // Used by Hibernate / JavaBeans
+    public boolean isActive() {
+        return active;
+    }
+
+    // Used by Service + TestNG
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
