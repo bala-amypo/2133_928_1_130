@@ -58,4 +58,31 @@ public class User {
             this.roles = roles;
         }
     }
+    public static Builder builder() {
+    return new Builder();
+}
+
+public static class Builder {
+    private final User user = new User();
+
+    public Builder email(String email) {
+        user.setEmail(email);
+        return this;
+    }
+
+    public Builder password(String password) {
+        user.setPassword(password);
+        return this;
+    }
+
+    public Builder roles(java.util.Set<String> roles) {
+        user.setRoles(roles);
+        return this;
+    }
+
+    public User build() {
+        return user;
+    }
+}
+
 }
