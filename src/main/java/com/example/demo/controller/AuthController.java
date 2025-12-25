@@ -38,13 +38,11 @@ public class AuthController {
                 .build();
 
         userRepository.save(user);
-
         return ResponseEntity.ok(new AuthResponse("dummy-token"));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest req) {
-
         return ResponseEntity.ok(new AuthResponse("dummy-token"));
     }
 }

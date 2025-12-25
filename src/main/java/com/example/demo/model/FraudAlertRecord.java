@@ -11,63 +11,48 @@ public class FraudAlertRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private Long claimId;
-
-    @Column(nullable = false)
     private String serialNumber;
-
-    @Column(nullable = false)
     private String alertType;
-
-    @Column(nullable = false)
     private String severity;
-
     private String message;
-
-    @Column(nullable = false)
-    private Boolean resolved = false;
-
-    @Column(nullable = false)
+    private boolean resolved;
     private LocalDateTime alertDate;
 
-    public FraudAlertRecord() {
+    public FraudAlertRecord() {}
+
+    public void setId(long id) { this.id = id; }
+    public Long getId() { return id; }
+
+    public static Builder builder() { return new Builder(); }
+
+    public static class Builder {
+        private final FraudAlertRecord r = new FraudAlertRecord();
+
+        public Builder id(Long id) { r.setId(id); return this; }
+        public Builder serialNumber(String s) { r.setSerialNumber(s); return this; }
+        public Builder severity(String s) { r.setSeverity(s); return this; }
+        public FraudAlertRecord build() { return r; }
     }
 
-    public FraudAlertRecord(Long claimId, String serialNumber,
-                            String alertType, String severity, String message) {
-        this.claimId = claimId;
-        this.serialNumber = serialNumber;
-        this.alertType = alertType;
-        this.severity = severity;
-        this.message = message;
-    }
+    public Long getClaimId() { return claimId; }
+    public void setClaimId(Long claimId) { this.claimId = claimId; }
 
-    @PrePersist
-    public void onCreate() {
-        this.alertDate = LocalDateTime.now();
-        if (this.resolved == null) {
-            this.resolved = false;
-        }
-    }
+    public String getSerialNumber() { return serialNumber; }
+    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getAlertType() { return alertType; }
+    public void setAlertType(String alertType) { this.alertType = alertType; }
 
-    public Long getClaimId() {
-        return claimId;
-    }
+    public String getSeverity() { return severity; }
+    public void setSeverity(String severity) { this.severity = severity; }
 
-    public String getSerialNumber() {
-        return serialNumber;
-    }
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
 
-    public Boolean getResolved() {
-        return resolved;
-    }
+    public boolean isResolved() { return resolved; }
+    public void setResolved(boolean resolved) { this.resolved = resolved; }
 
-    public void setResolved(Boolean resolved) {
-        this.resolved = resolved;
-    }
+    public LocalDateTime getAlertDate() { return alertDate; }
+    public void setAlertDate(LocalDateTime alertDate) { this.alertDate = alertDate; }
 }

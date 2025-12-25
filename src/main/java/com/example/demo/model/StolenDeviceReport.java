@@ -11,44 +11,36 @@ public class StolenDeviceReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String serialNumber;
-
-    @Column(nullable = false)
     private String reportedBy;
-
     private String details;
-
-    @Column(nullable = false)
     private LocalDateTime reportDate;
 
-    public StolenDeviceReport() {
+    public StolenDeviceReport() {}
+
+    public void setId(long id) { this.id = id; }
+    public Long getId() { return id; }
+
+    public static Builder builder() { return new Builder(); }
+
+    public static class Builder {
+        private final StolenDeviceReport r = new StolenDeviceReport();
+
+        public Builder id(Long id) { r.setId(id); return this; }
+        public Builder serialNumber(String s) { r.setSerialNumber(s); return this; }
+        public Builder reportedBy(String s) { r.setReportedBy(s); return this; }
+        public StolenDeviceReport build() { return r; }
     }
 
-    public StolenDeviceReport(String serialNumber, String reportedBy, String details) {
-        this.serialNumber = serialNumber;
-        this.reportedBy = reportedBy;
-        this.details = details;
-    }
+    public String getSerialNumber() { return serialNumber; }
+    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
 
-    @PrePersist
-    public void onCreate() {
-        this.reportDate = LocalDateTime.now();
-    }
+    public String getReportedBy() { return reportedBy; }
+    public void setReportedBy(String reportedBy) { this.reportedBy = reportedBy; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getDetails() { return details; }
+    public void setDetails(String details) { this.details = details; }
 
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public String getReportedBy() {
-        return reportedBy;
-    }
-
-    public String getDetails() {
-        return details;
-    }
+    public LocalDateTime getReportDate() { return reportDate; }
+    public void setReportDate(LocalDateTime reportDate) { this.reportDate = reportDate; }
 }

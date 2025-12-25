@@ -4,64 +4,47 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    name = "fraud_rules",
-    uniqueConstraints = @UniqueConstraint(columnNames = "ruleCode")
-)
+@Table(name = "fraud_rules")
 public class FraudRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String ruleCode;
-
-    @Column(nullable = false)
     private String ruleType;
-
     private String description;
-
-    @Column(nullable = false)
-    private Boolean active = true;
-
-    @Column(nullable = false)
+    private boolean active;
     private LocalDateTime createdAt;
 
-    public FraudRule() {
+    public FraudRule() {}
+
+    public void setId(long id) { this.id = id; }
+    public Long getId() { return id; }
+
+    public static Builder builder() { return new Builder(); }
+
+    public static class Builder {
+        private final FraudRule r = new FraudRule();
+
+        public Builder id(Long id) { r.setId(id); return this; }
+        public Builder ruleCode(String s) { r.setRuleCode(s); return this; }
+        public Builder ruleType(String s) { r.setRuleType(s); return this; }
+        public FraudRule build() { return r; }
     }
 
-    public FraudRule(String ruleCode, String ruleType, String description) {
-        this.ruleCode = ruleCode;
-        this.ruleType = ruleType;
-        this.description = description;
-    }
+    public String getRuleCode() { return ruleCode; }
+    public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
 
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        if (this.active == null) {
-            this.active = true;
-        }
-    }
+    public String getRuleType() { return ruleType; }
+    public void setRuleType(String ruleType) { this.ruleType = ruleType; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getRuleCode() {
-        return ruleCode;
-    }
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 
-    public String getRuleType() {
-        return ruleType;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-    public void setActive(Boolean active) {
-    this.active = active;
-}
-
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
