@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.DeviceOwnershipRecord;
-import com.example.demo.repository.DeviceOwnershipRepository;
+import com.example.demo.repository.DeviceOwnershipRecordRepository;
 import com.example.demo.service.DeviceOwnershipService;
 import org.springframework.stereotype.Service;
 
@@ -11,33 +11,31 @@ import java.util.NoSuchElementException;
 @Service
 public class DeviceOwnershipServiceImpl implements DeviceOwnershipService {
 
-    private final DeviceOwnershipRepository repository;
+    private final DeviceOwnershipRecordRepository repository;
 
-    public DeviceOwnershipServiceImpl(DeviceOwnershipRepository repository) {
+    public DeviceOwnershipServiceImpl(DeviceOwnershipRecordRepository repository) {
         this.repository = repository;
     }
 
+    // ✅ MUST MATCH INTERFACE
     @Override
-    public DeviceOwnershipRecord register(DeviceOwnershipRecord record) {
+    public DeviceOwnershipRecord registerDevice(DeviceOwnershipRecord record) {
         return repository.save(record);
     }
 
     @Override
-    public List<DeviceOwnershipRecord> getAll() {
+    public List<DeviceOwnershipRecord> getAllDevices() {
         return repository.findAll();
     }
 
     @Override
     public DeviceOwnershipRecord getBySerial(String serialNumber) {
-
-        // ✅ THIS LINE IS THE FIX
         return repository.findBySerialNumber(serialNumber)
                 .orElseThrow(NoSuchElementException::new);
     }
 
     @Override
-    public DeviceOwnershipRecord updateStatus(Long id, boolean active) {
-
+    public DeviceOwnershipRecord updateDeviceStatus(Long id, boolean active) {
         DeviceOwnershipRecord record = repository.findById(id)
                 .orElseThrow(NoSuchElementException::new);
 
