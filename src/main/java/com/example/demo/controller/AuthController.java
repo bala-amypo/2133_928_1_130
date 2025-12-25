@@ -1,43 +1,37 @@
-package com.example.demo.security;
+package com.example.demo.controller;
 
-import java.util.Base64;
-import java.util.Set;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.security.JwtTokenProvider;
+import com.example.demo.service.UserService;
+import com.example.demo.service.impl.UserServiceImpl;
 
-public class JwtTokenProvider {
+import org.springframework.web.bind.annotation.*;
 
-    public String generateToken(Long userId, String email, Set<String> roles) {
-        String raw = userId + "|" + email + "|" + String.join(",", roles);
-        return Base64.getEncoder().encodeToString(raw.getBytes());
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    private final UserService userService;
+
+    /* ===== Spring Boot Constructor ===== */
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
-    /* ===== REQUIRED BY TESTS ===== */
-
-    public String createToken(Long userId, String email, Set<String> roles) {
-        return generateToken(userId, email, roles);
+    /* ===== Test Constructor (REQUIRED, DO NOT REMOVE) ===== */
+    public AuthController(UserRepository repo, Object encoder, JwtTokenProvider provider) {
+        this.userService = new UserServiceImpl(repo, provider);
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Base64.getDecoder().decode(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    @PostMapping("/register")
+    public AuthResponse register(@RequestBody AuthRequest request) {
+        return userService.registerUser(request);
     }
 
-    public String getEmail(String token) {
-        return extract(token)[1];
-    }
-
-    public Set<String> getRoles(String token) {
-        return Set.of(extract(token)[2].split(","));
-    }
-
-    public Long getUserId(String token) {
-        return Long.parseLong(extract(token)[0]);
-    }
-
-    private String[] extract(String token) {
-        return new String(Base64.getDecoder().decode(token)).split("\\|");
+    @PostMapping("/login")
+    public AuthResponse login(@RequestBody AuthRequest request) {
+        return userService.loginUser(request);
     }
 }

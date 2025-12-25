@@ -7,16 +7,15 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationFilter implements Filter {
+public class JwtAuthenticationFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final CustomUserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider,
-                                   CustomUserDetailsService userDetailsService) {
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
-        this.userDetailsService = userDetailsService;
     }
+}
+
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res,
