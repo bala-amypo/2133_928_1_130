@@ -15,20 +15,22 @@ import java.util.Set;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret}")
+    // 🔹 Default value added (CRITICAL FIX)
+    @Value("${jwt.secret:DefaultJwtSecretKeyForWarrantyClaimFraudDetector_256_BIT_LENGTH}")
     private String secret;
 
-    @Value("${jwt.expiration}")
+    @Value("${jwt.expiration:86400000}")
     private long validityInMs;
 
     private Key key;
 
     @PostConstruct
-    protected void init() {
+    public void init() {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String createToken(Long userId, String email, Set<String> roles) {
+
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("userId", userId);
         claims.put("roles", roles);
@@ -46,7 +48,10 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
@@ -63,12 +68,14 @@ public class JwtTokenProvider {
     }
 
     public Long getUserId(String token) {
-        return ((Number) Jwts.parserBuilder()
+        Object value = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get("userId")).longValue();
+                .get("userId");
+
+        return value == null ? null : ((Number) value).longValue();
     }
 
     @SuppressWarnings("unchecked")
