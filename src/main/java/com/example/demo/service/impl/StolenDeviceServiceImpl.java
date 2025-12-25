@@ -1,53 +1,47 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.StolenDeviceReportEntity;
+import com.example.demo.model.StolenDeviceReport;
 import com.example.demo.repository.DeviceOwnershipRecordRepository;
 import com.example.demo.repository.StolenDeviceReportRepository;
-import com.example.demo.service.StolenDeviceReportService;
+import com.example.demo.service.StolenDeviceService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
-public class StolenDeviceServiceImpl implements StolenDeviceReportService {
+public class StolenDeviceServiceImpl implements StolenDeviceService {
 
-    private final StolenDeviceReportRepository stolenRepository;
+    private final StolenDeviceReportRepository reportRepository;
     private final DeviceOwnershipRecordRepository deviceRepository;
 
-    public StolenDeviceServiceImpl(
-            StolenDeviceReportRepository stolenRepository,
-            DeviceOwnershipRecordRepository deviceRepository) {
-        this.stolenRepository = stolenRepository;
+    public StolenDeviceServiceImpl(StolenDeviceReportRepository reportRepository,
+                                   DeviceOwnershipRecordRepository deviceRepository) {
+        this.reportRepository = reportRepository;
         this.deviceRepository = deviceRepository;
     }
 
     @Override
-    public StolenDeviceReportEntity reportStolen(StolenDeviceReportEntity report) {
-
-        deviceRepository.findBySerialNumber(report.getSerialNumber())
-                .orElseThrow(() -> new NoSuchElementException("Device not found"));
-
-        return stolenRepository.save(report);
+    public StolenDeviceReport reportStolen(StolenDeviceReport report) {
+        if (!deviceRepository.existsBySerialNumber(report.getSerialNumber())) {
+            throw new NoSuchElementException("Device not found");
+        }
+        return reportRepository.save(report);
     }
 
     @Override
-    public List<StolenDeviceReportEntity> getReportsBySerial(String serialNumber) {
-
-        return stolenRepository.findBySerialNumber(serialNumber)
-                .map(List::of)
-                .orElse(List.of());
+    public List<StolenDeviceReport> getReportsBySerial(String serialNumber) {
+        return reportRepository.findBySerialNumber(serialNumber);
     }
 
     @Override
-    public StolenDeviceReportEntity getReportById(Long id) {
-
-        return stolenRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Request not found"));
+    public Optional<StolenDeviceReport> getReportById(Long id) {
+        return reportRepository.findById(id);
     }
 
     @Override
-    public List<StolenDeviceReportEntity> getAllReports() {
-        return stolenRepository.findAll();
+    public List<StolenDeviceReport> getAllReports() {
+        return reportRepository.findAll();
     }
 }
