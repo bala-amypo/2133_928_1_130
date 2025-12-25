@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -12,22 +11,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
     private String email;
     private String password;
-    private LocalDateTime createdAt = LocalDateTime.now();
 
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles;
 
+    // ✅ required no-arg constructor
     public User() {}
 
-    /* ===== REQUIRED BY TESTS ===== */
-    public void setId(long id) { this.id = id; }
-    public Long getId() { return id; }
-    public Set<String> getRoles() { return roles; }
-    public String getPassword() { return password; }
-
+    // ✅ builder (required by MANY tests)
     public static Builder builder() {
         return new Builder();
     }
@@ -40,28 +33,57 @@ public class User {
             return this;
         }
 
-        public Builder name(String n) {
-            u.name = n;
+        public Builder email(String email) {
+            u.email = email;
             return this;
         }
 
-        public Builder email(String e) {
-            u.email = e;
+        public Builder password(String password) {
+            u.password = password;
             return this;
         }
 
-        public Builder password(String p) {
-            u.password = p;
-            return this;
-        }
-
-        public Builder roles(Set<String> r) {
-            u.roles = r;
+        public Builder roles(Set<String> roles) {
+            u.roles = roles;
             return this;
         }
 
         public User build() {
             return u;
         }
+    }
+
+    // ✅ getters (CRITICAL)
+    public Long getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    // ✅ setters (used by services)
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
     }
 }
