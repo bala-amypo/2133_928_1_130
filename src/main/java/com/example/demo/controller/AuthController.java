@@ -19,14 +19,17 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final UserService userService;
-    private final JwtTokenProvider tokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
+
 
     public AuthController(UserRepository userRepository,
                       PasswordEncoder passwordEncoder,
                       JwtTokenProvider jwtTokenProvider) {
+
     this.userService = new UserServiceImpl(userRepository, passwordEncoder);
     this.jwtTokenProvider = jwtTokenProvider;
 }
+
 
 
     @PostMapping("/register")
