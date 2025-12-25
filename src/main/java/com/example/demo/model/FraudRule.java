@@ -19,19 +19,25 @@ public class FraudRule {
 
     public FraudRule() {}
 
-    /* ===== REQUIRED BY TESTS ===== */
+    /* ================= REQUIRED BY TESTS ================= */
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public boolean getActive() {
+        return active;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    /* ===== BUILDER ===== */
-    public static Builder builder() {
-        return new Builder();
-    }
+    /* ================= BUILDER ================= */
 
     public static class Builder {
         private final FraudRule r = new FraudRule();
@@ -66,53 +72,21 @@ public class FraudRule {
         }
     }
 
-    /* ===== GETTERS / SETTERS ===== */
+    /* ================= GETTERS & SETTERS ================= */
 
-    public String getRuleCode() {
-        return ruleCode;
-    }
+    public Long getId() { return id; }
 
-    public void setRuleCode(String ruleCode) {
-        this.ruleCode = ruleCode;
-    }
+    public String getRuleCode() { return ruleCode; }
+    public void setRuleCode(String ruleCode) { this.ruleCode = ruleCode; }
 
-    public String getRuleType() {
-        return ruleType;
-    }
+    public String getRuleType() { return ruleType; }
+    public void setRuleType(String ruleType) { this.ruleType = ruleType; }
 
-    public void setRuleType(String ruleType) {
-        this.ruleType = ruleType;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getDescription() {
-        return description;
-    }
+    public void setActive(boolean active) { this.active = active; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /* 🔑 CRITICAL PART (FIX) */
-
-    // Used by Hibernate / JavaBeans
-    public boolean isActive() {
-        return active;
-    }
-
-    // Used by Service + TestNG
-    public boolean getActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
