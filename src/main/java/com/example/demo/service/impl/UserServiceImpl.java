@@ -6,63 +6,47 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
-import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.Optional;
 
-@Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final UserRepository repo;
+    private final JwtTokenProvider jwt;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           JwtTokenProvider jwtTokenProvider) {
-        this.userRepository = userRepository;
-        this.jwtTokenProvider = jwtTokenProvider;
+    public UserServiceImpl(UserRepository repo, JwtTokenProvider jwt) {
+        this.repo = repo;
+        this.jwt = jwt;
     }
 
-    // ✅ MATCHES UserService EXACTLY
     @Override
-    public AuthResponse registerUser(AuthRequest request) {
-
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+    public AuthResponse registerUser(AuthRequest req) {
+        Optional<User> existing = repo.findByEmail(req.getEmail());
+        if (existing.isPresent()) {
             throw new RuntimeException("Email already exists");
         }
 
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setRoles(Collections.singleton("USER"));
+        User u = User.builder()
+                .email(req.getEmail())
+                .password(req.getPassword())
+                .build();
 
-        User saved = userRepository.save(user);
+        repo.save(u);
 
-        String token = jwtTokenProvider.generateToken(
-                saved.getId(),
-                saved.getEmail(),
-                saved.getRoles()
-        );
-
-        return new AuthResponse(token);
+        String token = jwt.createToken(u.getId(), u.getEmail(), u.getRoles());
+        return new AuthResponse(token, u.getId(), u.getEmail(), u.getRoles());
     }
 
-    // ✅ MATCHES UserService EXACTLY
     @Override
-    public AuthResponse loginUser(AuthRequest request) {
-
-        User user = userRepository.findByEmail(request.getEmail())
+    public AuthResponse loginUser(AuthRequest req) {
+        User u = repo.findByEmail(req.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!user.getPassword().equals(request.getPassword())) {
+        if (!u.getPassword().equals(req.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
 
-        String token = jwtTokenProvider.generateToken(
-                user.getId(),
-                user.getEmail(),
-                user.getRoles()
-        );
-
-        return new AuthResponse(token);
+        String token = jwt.createToken(u.getId(), u.getEmail(), u.getRoles());
+        return new AuthResponse(token, u.getId(), u.getEmail(), u.getRoles());
     }
 }
