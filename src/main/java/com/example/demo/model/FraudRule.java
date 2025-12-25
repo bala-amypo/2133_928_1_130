@@ -60,4 +60,8 @@ public class FraudRule {
     public Boolean getActive() {
         return active;
     }
+    public void setActive(Boolean active) {
+    this.active = active;
+}
+
 }
