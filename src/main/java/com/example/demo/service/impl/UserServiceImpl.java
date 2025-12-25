@@ -1,12 +1,15 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,23 +21,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User save(User user) {
+    public AuthResponse registerUser(RegisterRequest request) {
+        User user = new User();
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRoles(new HashSet<>());
         user.setCreatedAt(LocalDateTime.now());
-        return userRepository.save(user);
+
+        userRepository.save(user);
+
+        return new AuthResponse("REGISTER_SUCCESS");
     }
 
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
-    }
-
-    @Override
-    public User getById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public User loginUser(AuthRequest request) {
-        return userRepository.findByEmail(request.getEmail()).orElse(null);
+    public AuthResponse loginUser(AuthRequest request) {
+        return new AuthResponse("LOGIN_SUCCESS");
     }
 }
