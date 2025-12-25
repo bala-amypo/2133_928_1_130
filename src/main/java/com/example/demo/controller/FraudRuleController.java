@@ -10,26 +10,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/fraud-rules")
 public class FraudRuleController {
-    
-    private final FraudRuleService fraudRuleService;
-    
-    public FraudRuleController(FraudRuleService fraudRuleService) {
-        this.fraudRuleService = fraudRuleService;
+
+    private final FraudRuleService service;
+
+    public FraudRuleController(FraudRuleService service) {
+        this.service = service;
     }
-    
+
     @PostMapping
-    public ResponseEntity<FraudRule> createRule(@RequestBody FraudRule rule) {
-        return ResponseEntity.ok(fraudRuleService.createRule(rule));
+    public ResponseEntity<FraudRule> create(@RequestBody FraudRule rule) {
+        return ResponseEntity.ok(service.createRule(rule));
     }
-    
+
     @GetMapping
-    public ResponseEntity<List<FraudRule>> getAllRules() {
-        return ResponseEntity.ok(fraudRuleService.getAllRules());
+    public ResponseEntity<List<FraudRule>> getAll() {
+        return ResponseEntity.ok(service.getAllRules());
     }
-    
+
     @GetMapping("/active")
-    public ResponseEntity<List<FraudRule>> getActiveRules() {
-        return ResponseEntity.ok(fraudRuleService.getActiveRules());
+    public ResponseEntity<List<FraudRule>> getActive() {
+        return ResponseEntity.ok(service.getActiveRules());
     }
 }
-

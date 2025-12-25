@@ -1,4 +1,3 @@
-
 package com.example.demo.controller;
 
 import com.example.demo.model.FraudAlertRecord;
@@ -11,21 +10,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/fraud-alerts")
 public class FraudAlertController {
-    
+
     private final FraudAlertService service;
-    
+
     public FraudAlertController(FraudAlertService service) {
         this.service = service;
     }
-    
+
     @PostMapping
-    public ResponseEntity<FraudAlertRecord> createAlert(@RequestBody FraudAlertRecord alert) {
-        return ResponseEntity.ok(service.create(alert));
+    public ResponseEntity<FraudAlertRecord> create(
+            @RequestBody FraudAlertRecord alert) {
+        return ResponseEntity.ok(service.createAlert(alert));
     }
-    
+
     @GetMapping
-    public ResponseEntity<List<FraudAlertRecord>> getAllAlerts() {
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<List<FraudAlertRecord>> getAll() {
+        return ResponseEntity.ok(service.getAllAlerts());
+    }
+
+    @PutMapping("/{id}/resolve")
+    public ResponseEntity<FraudAlertRecord> resolve(@PathVariable Long id) {
+        return ResponseEntity.ok(service.resolveAlert(id));
     }
 }
-
