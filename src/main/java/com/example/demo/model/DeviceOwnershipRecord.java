@@ -5,88 +5,57 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    name = "device_ownership_records",
-    uniqueConstraints = @UniqueConstraint(columnNames = "serialNumber")
-)
+@Table(name = "device_ownership_records")
 public class DeviceOwnershipRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String serialNumber;
-
-    @Column(nullable = false)
     private String ownerName;
-
     private String ownerEmail;
-
     private LocalDate purchaseDate;
-
-    @Column(nullable = false)
     private LocalDate warrantyExpiration;
-
-    @Column(nullable = false)
-    private Boolean active = true;
-
-    @Column(nullable = false)
+    private boolean active;
     private LocalDateTime createdAt;
 
-    public DeviceOwnershipRecord() {
+    public DeviceOwnershipRecord() {}
+
+    public void setId(long id) { this.id = id; }
+    public Long getId() { return id; }
+
+    public static Builder builder() { return new Builder(); }
+
+    public static class Builder {
+        private final DeviceOwnershipRecord r = new DeviceOwnershipRecord();
+
+        public Builder id(Long id) { r.setId(id); return this; }
+        public Builder serialNumber(String s) { r.setSerialNumber(s); return this; }
+        public Builder ownerName(String s) { r.setOwnerName(s); return this; }
+        public Builder ownerEmail(String s) { r.setOwnerEmail(s); return this; }
+        public Builder active(boolean a) { r.setActive(a); return this; }
+        public DeviceOwnershipRecord build() { return r; }
     }
 
-    public DeviceOwnershipRecord(String serialNumber, String ownerName, String ownerEmail,
-                                 LocalDate purchaseDate, LocalDate warrantyExpiration) {
-        this.serialNumber = serialNumber;
-        this.ownerName = ownerName;
-        this.ownerEmail = ownerEmail;
-        this.purchaseDate = purchaseDate;
-        this.warrantyExpiration = warrantyExpiration;
-    }
+    public String getSerialNumber() { return serialNumber; }
+    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
 
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        if (this.active == null) {
-            this.active = true;
-        }
-    }
+    public String getOwnerName() { return ownerName; }
+    public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getOwnerEmail() { return ownerEmail; }
+    public void setOwnerEmail(String ownerEmail) { this.ownerEmail = ownerEmail; }
 
-    public String getSerialNumber() {
-        return serialNumber;
-    }
+    public LocalDate getPurchaseDate() { return purchaseDate; }
+    public void setPurchaseDate(LocalDate purchaseDate) { this.purchaseDate = purchaseDate; }
 
-    public String getOwnerName() {
-        return ownerName;
-    }
+    public LocalDate getWarrantyExpiration() { return warrantyExpiration; }
+    public void setWarrantyExpiration(LocalDate warrantyExpiration) { this.warrantyExpiration = warrantyExpiration; }
 
-    public String getOwnerEmail() {
-        return ownerEmail;
-    }
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 
-    public LocalDate getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public LocalDate getWarrantyExpiration() {
-        return warrantyExpiration;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-    public boolean isEmpty() {
-    return this.serialNumber == null || this.serialNumber.isBlank();
-}
-
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }
