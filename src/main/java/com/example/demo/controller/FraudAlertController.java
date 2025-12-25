@@ -18,18 +18,17 @@ public class FraudAlertController {
     }
 
     @PostMapping
-    public ResponseEntity<FraudAlertRecord> create(
-            @RequestBody FraudAlertRecord alert) {
+    public ResponseEntity<FraudAlertRecord> create(@RequestBody FraudAlertRecord alert) {
         return ResponseEntity.ok(service.createAlert(alert));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<FraudAlertRecord>> getAll() {
-        return ResponseEntity.ok(service.getAllAlerts());
     }
 
     @PutMapping("/{id}/resolve")
     public ResponseEntity<FraudAlertRecord> resolve(@PathVariable Long id) {
         return ResponseEntity.ok(service.resolveAlert(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FraudAlertRecord>> getAll() {
+        return ResponseEntity.ok(service.getAllAlerts());
     }
 }

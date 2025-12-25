@@ -18,25 +18,13 @@ public class WarrantyClaimController {
     }
 
     @PostMapping
-    public ResponseEntity<WarrantyClaimRecord> submit(
-            @RequestBody WarrantyClaimRecord claim) {
+    public ResponseEntity<WarrantyClaimRecord> submit(@RequestBody WarrantyClaimRecord claim) {
         return ResponseEntity.ok(service.submitClaim(claim));
     }
 
     @GetMapping
     public ResponseEntity<List<WarrantyClaimRecord>> getAll() {
         return ResponseEntity.ok(service.getAllClaims());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<WarrantyClaimRecord> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getClaimById(id).orElseThrow());
-    }
-
-    @GetMapping("/serial/{serial}")
-    public ResponseEntity<List<WarrantyClaimRecord>> getBySerial(
-            @PathVariable String serial) {
-        return ResponseEntity.ok(service.getClaimsBySerial(serial));
     }
 
     @PutMapping("/{id}/status")

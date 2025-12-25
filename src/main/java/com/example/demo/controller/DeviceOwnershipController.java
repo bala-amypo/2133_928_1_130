@@ -18,20 +18,13 @@ public class DeviceOwnershipController {
     }
 
     @PostMapping
-    public ResponseEntity<DeviceOwnershipRecord> create(
-            @RequestBody DeviceOwnershipRecord device) {
+    public ResponseEntity<DeviceOwnershipRecord> create(@RequestBody DeviceOwnershipRecord device) {
         return ResponseEntity.ok(service.registerDevice(device));
     }
 
     @GetMapping
     public ResponseEntity<List<DeviceOwnershipRecord>> getAll() {
         return ResponseEntity.ok(service.getAllDevices());
-    }
-
-    @GetMapping("/serial/{serial}")
-    public ResponseEntity<DeviceOwnershipRecord> getBySerial(
-            @PathVariable String serial) {
-        return ResponseEntity.ok(service.getBySerial(serial));
     }
 
     @PutMapping("/{id}/status")

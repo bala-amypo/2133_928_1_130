@@ -18,8 +18,7 @@ public class StolenDeviceController {
     }
 
     @PostMapping
-    public ResponseEntity<StolenDeviceReport> report(
-            @RequestBody StolenDeviceReport report) {
+    public ResponseEntity<StolenDeviceReport> report(@RequestBody StolenDeviceReport report) {
         return ResponseEntity.ok(service.reportStolen(report));
     }
 
@@ -29,8 +28,7 @@ public class StolenDeviceController {
     }
 
     @GetMapping("/serial/{serial}")
-    public ResponseEntity<List<StolenDeviceReport>> getBySerial(
-            @PathVariable String serial) {
+    public ResponseEntity<List<StolenDeviceReport>> getBySerial(@PathVariable String serial) {
         return ResponseEntity.ok(service.getReportsBySerial(serial));
     }
 }
