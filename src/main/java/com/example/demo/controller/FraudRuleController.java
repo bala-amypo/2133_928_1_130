@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.FraudRuleEntity;
+import com.example.demo.model.FraudRule;
 import com.example.demo.service.FraudRuleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,39 +8,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/fraud-rules")
+@RequestMapping("/api/fraud-rules")
 public class FraudRuleController {
-
-    private final FraudRuleService service;
-
-    public FraudRuleController(FraudRuleService service) {
-        this.service = service;
+    
+    private final FraudRuleService fraudRuleService;
+    
+    public FraudRuleController(FraudRuleService fraudRuleService) {
+        this.fraudRuleService = fraudRuleService;
     }
-
+    
     @PostMapping
-    public ResponseEntity<FraudRuleEntity> create(@RequestBody FraudRuleEntity rule) {
-        return ResponseEntity.ok(service.createRule(rule));
+    public ResponseEntity<FraudRule> createRule(@RequestBody FraudRule rule) {
+        return ResponseEntity.ok(fraudRuleService.createRule(rule));
     }
-
+    
     @GetMapping
-    public ResponseEntity<List<FraudRuleEntity>> getAll() {
-        return ResponseEntity.ok(service.getAllRules());
+    public ResponseEntity<List<FraudRule>> getAllRules() {
+        return ResponseEntity.ok(fraudRuleService.getAllRules());
     }
-
+    
     @GetMapping("/active")
-    public ResponseEntity<List<FraudRuleEntity>> getActive() {
-        return ResponseEntity.ok(service.getActiveRules());
-    }
-
-    @GetMapping("/code/{ruleCode}")
-    public ResponseEntity<FraudRuleEntity> getByCode(@PathVariable String ruleCode) {
-        return ResponseEntity.ok(service.getRuleByCode(ruleCode));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<FraudRuleEntity> update(
-            @PathVariable Long id,
-            @RequestBody FraudRuleEntity rule) {
-        return ResponseEntity.ok(service.updateRule(id, rule));
+    public ResponseEntity<List<FraudRule>> getActiveRules() {
+        return ResponseEntity.ok(fraudRuleService.getActiveRules());
     }
 }
+

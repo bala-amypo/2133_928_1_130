@@ -1,41 +1,50 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.StolenDeviceReportEntity;
-import com.example.demo.service.StolenDeviceReportService;
+import com.example.demo.model.StolenDeviceReport;
+import com.example.demo.service.StolenDeviceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/stolen-devices")
-public class StolenDeviceReportController {
-
-    private final StolenDeviceReportService service;
-
-    public StolenDeviceReportController(StolenDeviceReportService service) {
-        this.service = service;
+@RequestMapping("/api/stolen-devices")
+public class StolenDeviceController {
+    
+    private final StolenDeviceService stolenDeviceService;
+    
+    public StolenDeviceController(StolenDeviceService stolenDeviceService) {
+        this.stolenDeviceService = stolenDeviceService;
     }
-
+    
     @PostMapping
-    public ResponseEntity<StolenDeviceReportEntity> report(
-            @RequestBody StolenDeviceReportEntity report) {
-        return ResponseEntity.ok(service.reportStolen(report));
+    public ResponseEntity<StolenDeviceReport> reportStolen(@RequestBody StolenDeviceReport report) {
+        return ResponseEntity.ok(stolenDeviceService.reportStolen(report));
     }
-
+    
     @GetMapping
-    public ResponseEntity<List<StolenDeviceReportEntity>> getAll() {
-        return ResponseEntity.ok(service.getAllReports());
+    public ResponseEntity<List<StolenDeviceReport>> getAllReports() {
+        return ResponseEntity.ok(stolenDeviceService.getAllReports());
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<StolenDeviceReportEntity> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getReportById(id));
-    }
-
+    
     @GetMapping("/serial/{serialNumber}")
-    public ResponseEntity<List<StolenDeviceReportEntity>> getBySerial(
-            @PathVariable String serialNumber) {
-        return ResponseEntity.ok(service.getReportsBySerial(serialNumber));
+    public ResponseEntity<List<StolenDeviceReport>> getReportsBySerial(@PathVariable String serialNumber) {
+        return ResponseEntity.ok(stolenDeviceService.getReportsBySerial(serialNumber));
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<StolenDeviceReport> getReportById(@PathVariable Long id) {
+        Optional<StolenDeviceReport> report = stolenDeviceService.getReportById(id);
+        return report.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
+        stolenDeviceService.deleteReport(id);
+        return ResponseEntity.noContent().build();
     }
 }
+
+
+
