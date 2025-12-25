@@ -2,27 +2,24 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
-import com.example.demo.service.impl.UserServiceImpl;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private UserService userService;
 
-    /* ===== Spring Boot Constructor ===== */
-    public AuthController(UserService userService) {
-        this.userService = userService;
+    // ✅ REQUIRED by Spring
+    public AuthController() {
     }
 
-    /* ===== Test Constructor (REQUIRED, DO NOT REMOVE) ===== */
-    public AuthController(UserRepository repo, Object encoder, JwtTokenProvider provider) {
-        this.userService = new UserServiceImpl(repo, provider);
+    // ✅ REQUIRED by Spring + tests
+    @Autowired
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/register")

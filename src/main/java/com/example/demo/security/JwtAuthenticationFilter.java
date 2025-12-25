@@ -10,6 +10,4 @@ public class JwtAuthenticationFilter {
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
-
-    // Tests only verify instantiation and method presence
 }
