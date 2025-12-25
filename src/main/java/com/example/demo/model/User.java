@@ -1,17 +1,11 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
 
     @Id
@@ -27,8 +21,62 @@ public class User {
 
     private LocalDateTime createdAt;
 
-    // REQUIRED BY TEST
-    public void setId(Long id) {
-        this.id = id;
+    public User() {}
+
+    public User(String name, String email, String password, Set<String> roles) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    // ---------- getters ----------
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
+    public Set<String> getRoles() { return roles; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+
+    // ---------- setters ----------
+    public void setId(Long id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setEmail(String email) { this.email = email; }
+    public void setPassword(String password) { this.password = password; }
+    public void setRoles(Set<String> roles) { this.roles = roles; }
+
+    // ---------- builder ----------
+    public static Builder builder() { return new Builder(); }
+
+    public static class Builder {
+        private String name;
+        private String email;
+        private String password;
+        private Set<String> roles;
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder roles(Set<String> roles) {
+            this.roles = roles;
+            return this;
+        }
+
+        public User build() {
+            return new User(name, email, password, roles);
+        }
     }
 }

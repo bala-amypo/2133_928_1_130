@@ -1,68 +1,76 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository repository;
-    private final PasswordEncoder encoder;
-    private final JwtTokenProvider tokenProvider;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository repository,
-                           PasswordEncoder encoder,
-                           JwtTokenProvider tokenProvider) {
-        this.repository = repository;
-        this.encoder = encoder;
-        this.tokenProvider = tokenProvider;
+    // ✅ REQUIRED CONSTRUCTOR (used by Spring AND by AuthController test)
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
+   
     @Override
-    public User registerUser(RegisterRequest request) {
-        if (repository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email already in use");
-        }
+    public User register(RegisterRequest request) {
+
+        Set<String> roles = new HashSet<>();
+        roles.add("ROLE_USER");
 
         User user = new User(
                 request.getName(),
                 request.getEmail(),
-                encoder.encode(request.getPassword()),
-                request.getRoles()
+                passwordEncoder.encode(request.getPassword()),
+                roles
         );
 
-        return repository.save(user);
+        user.setCreatedAt(LocalDateTime.now());
+
+        return userRepository.save(user);
     }
 
     @Override
-    public User loginUser(AuthRequest request) {
-        User user = repository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+    public User login(LoginRequest request) {
 
-        if (!encoder.matches(request.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Invalid input");
+        Optional<User> optionalUser =
+                userRepository.findByEmail(request.getEmail());
+
+        if (optionalUser.isEmpty()) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        User user = optionalUser.get();
+
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword())) {
+            throw new ResourceNotFoundException("Invalid credentials");
         }
 
         return user;
     }
 
     @Override
-    public User getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
-    }
-
-    @Override
     public User findByEmail(String email) {
-        return repository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found"));
     }
 }
