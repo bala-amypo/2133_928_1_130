@@ -6,45 +6,49 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "stolen_device_reports")
 public class StolenDeviceReport {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @Column(nullable = false)
     private String serialNumber;
+
+    @Column(nullable = false)
+    private String reportedBy;
+
+    private String details;
+
+    @Column(nullable = false)
     private LocalDateTime reportDate;
-    private String reporterName;
-    private String reporterContact;
-    
-    public StolenDeviceReport() {}
-    
-    public static StolenDeviceReportBuilder builder() {
-        return new StolenDeviceReportBuilder();
+
+    public StolenDeviceReport() {
     }
-    
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    
-    public String getSerialNumber() { return serialNumber; }
-    public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
-    
-    public LocalDateTime getReportDate() { return reportDate; }
-    public void setReportDate(LocalDateTime reportDate) { this.reportDate = reportDate; }
-    
-    public String getReporterName() { return reporterName; }
-    public void setReporterName(String reporterName) { this.reporterName = reporterName; }
-    
-    public String getReporterContact() { return reporterContact; }
-    public void setReporterContact(String reporterContact) { this.reporterContact = reporterContact; }
-    
-    public static class StolenDeviceReportBuilder {
-        private StolenDeviceReport report = new StolenDeviceReport();
-        
-        public StolenDeviceReportBuilder id(Long id) { report.setId(id); return this; }
-        public StolenDeviceReportBuilder serialNumber(String serialNumber) { report.setSerialNumber(serialNumber); return this; }
-        public StolenDeviceReportBuilder reportDate(LocalDateTime reportDate) { report.setReportDate(reportDate); return this; }
-        public StolenDeviceReportBuilder reporterName(String reporterName) { report.setReporterName(reporterName); return this; }
-        public StolenDeviceReportBuilder reporterContact(String reporterContact) { report.setReporterContact(reporterContact); return this; }
-        
-        public StolenDeviceReport build() { return report; }
+
+    public StolenDeviceReport(String serialNumber, String reportedBy, String details) {
+        this.serialNumber = serialNumber;
+        this.reportedBy = reportedBy;
+        this.details = details;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.reportDate = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public String getReportedBy() {
+        return reportedBy;
+    }
+
+    public String getDetails() {
+        return details;
     }
 }
