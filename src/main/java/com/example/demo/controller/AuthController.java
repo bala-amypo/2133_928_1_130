@@ -15,19 +15,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private UserService userService;
+    private JwtTokenProvider jwtTokenProvider;
 
-    // ✅ CONSTRUCTOR USED BY SPRING
-    public AuthController(UserService userService) {
-        this.userService = userService;
-        this.jwtTokenProvider = null;
+    // ✅ REQUIRED BY SPRING BOOT
+    public AuthController() {
+        // Spring will use this
     }
 
-    // ✅ CONSTRUCTOR USED BY TESTNG (MATCHES YOUR UserServiceImpl)
+    // ✅ USED BY SPRING (AUTOWIRED)
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
+    // ✅ USED BY TESTNG (DO NOT REMOVE)
     public AuthController(
             UserRepository userRepository,
-            Object passwordEncoderIgnored,   // ignored but required by tests
+            Object passwordEncoderIgnored,
             JwtTokenProvider jwtTokenProvider
     ) {
         this.userService = new UserServiceImpl(userRepository);
