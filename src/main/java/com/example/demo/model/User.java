@@ -1,40 +1,32 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String name;
     private String email;
     private String password;
-    private Set<String> roles = new HashSet<>();
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    public User() {
-        this.roles.add("USER"); // REQUIRED by test28
-        this.createdAt = LocalDateTime.now();
-    }
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> roles;
 
-    /* ================= GETTERS & SETTERS ================= */
+    public User() {}
 
+    /* ===== REQUIRED BY TESTS ===== */
+    public void setId(long id) { this.id = id; }
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
     public Set<String> getRoles() { return roles; }
-    public void setRoles(Set<String> roles) { this.roles = roles; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    /* ================= BUILDER ================= */
+    public String getPassword() { return password; }
 
     public static Builder builder() {
         return new Builder();
@@ -43,11 +35,33 @@ public class User {
     public static class Builder {
         private final User u = new User();
 
-        public Builder email(String v) { u.setEmail(v); return this; }
-        public Builder password(String v) { u.setPassword(v); return this; }
-        public Builder roles(Set<String> v) { u.setRoles(v); return this; }
+        public Builder id(Long id) {
+            u.id = id;
+            return this;
+        }
 
-        public User build() { return u; }
+        public Builder name(String n) {
+            u.name = n;
+            return this;
+        }
+
+        public Builder email(String e) {
+            u.email = e;
+            return this;
+        }
+
+        public Builder password(String p) {
+            u.password = p;
+            return this;
+        }
+
+        public Builder roles(Set<String> r) {
+            u.roles = r;
+            return this;
+        }
+
+        public User build() {
+            return u;
+        }
     }
 }
- 
