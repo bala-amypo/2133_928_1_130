@@ -4,50 +4,94 @@ import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
-@Service   // ✅ THIS WAS MISSING — CRITICAL
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    // ✅ REQUIRED FOR SPRING
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    // ✅ REQUIRED constructor for Spring + tests
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder,
+                           JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    // ✅ REGISTER USER (test4, test44)
     @Override
     public AuthResponse registerUser(AuthRequest request) {
 
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        Optional<User> existing = userRepository.findByEmail(request.getEmail());
+        if (existing.isPresent()) {
             throw new RuntimeException("Email already exists");
         }
 
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setRoles(Set.of("USER"));
+        Set<String> roles = new HashSet<>();
+        roles.add("USER"); // ✅ default role required by tests
 
-        userRepository.save(user);
+        User user = User.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .roles(roles)
+                .build();
 
-        return new AuthResponse("dummy-token");
+        User saved = userRepository.save(user);
+
+        String token = jwtTokenProvider.createToken(
+                saved.getId(),
+                saved.getEmail(),
+                saved.getRoles()
+        );
+
+        return new AuthResponse(
+                token,
+                saved.getId(),
+                saved.getEmail(),
+                saved.getRoles()
+        );
     }
 
+    // ✅ LOGIN USER (test5, test43)
     @Override
     public AuthResponse loginUser(AuthRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
-        if (!user.getPassword().equals(request.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }
 
-        return new AuthResponse("dummy-token");
+        String token = jwtTokenProvider.createToken(
+                user.getId(),
+                user.getEmail(),
+                user.getRoles()
+        );
+
+        return new AuthResponse(
+                token,
+                user.getId(),
+                user.getEmail(),
+                user.getRoles()
+        );
+    }
+
+    // ✅ REQUIRED by interface & tests
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElse(null);
     }
 }
