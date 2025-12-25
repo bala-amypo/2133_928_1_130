@@ -10,6 +10,8 @@ public class WarrantyClaimRecord {
     private Long id;
 
     private String serialNumber;
+    private String claimReason;
+
 
     private String status = "SUBMITTED";
 
