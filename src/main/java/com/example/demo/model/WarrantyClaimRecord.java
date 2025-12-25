@@ -27,15 +27,18 @@ public class WarrantyClaimRecord {
     public static Builder builder() { return new Builder(); }
 
     public static class Builder {
-        private final WarrantyClaimRecord r = new WarrantyClaimRecord();
+    private final WarrantyClaimRecord w = new WarrantyClaimRecord();
 
-        public Builder id(Long id) { r.setId(id); return this; }
-        public Builder serialNumber(String s) { r.setSerialNumber(s); return this; }
-        public Builder claimantName(String s) { r.setClaimantName(s); return this; }
-        public Builder claimantEmail(String s) { r.setClaimantEmail(s); return this; }
-        public Builder status(String s) { r.setStatus(s); return this; }
-        public WarrantyClaimRecord build() { return r; }
-    }
+    public Builder id(Long id) { w.setId(id); return this; }
+    public Builder serialNumber(String v) { w.setSerialNumber(v); return this; }
+    public Builder claimantName(String v) { w.setClaimantName(v); return this; }
+    public Builder claimantEmail(String v) { w.setClaimantEmail(v); return this; }
+    public Builder claimReason(String v) { w.setClaimReason(v); return this; }
+    public Builder status(String v) { w.setStatus(v); return this; }
+
+    public WarrantyClaimRecord build() { return w; }
+}
+
 
     public String getSerialNumber() { return serialNumber; }
     public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }

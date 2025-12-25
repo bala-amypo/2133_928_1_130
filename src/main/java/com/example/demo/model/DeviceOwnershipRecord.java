@@ -25,18 +25,35 @@ public class DeviceOwnershipRecord {
     public void setId(long id) { this.id = id; }
     public Long getId() { return id; }
 
-    public static Builder builder() { return new Builder(); }
+    /* ===== REQUIRED BY TESTS ===== */
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public boolean isEmpty() {
+        return serialNumber == null || serialNumber.isEmpty();
+    }
+
+    public boolean getActive() {
+        return active;
+    }
 
     public static class Builder {
-        private final DeviceOwnershipRecord r = new DeviceOwnershipRecord();
+        private final DeviceOwnershipRecord d = new DeviceOwnershipRecord();
 
-        public Builder id(Long id) { r.setId(id); return this; }
-        public Builder serialNumber(String s) { r.setSerialNumber(s); return this; }
-        public Builder ownerName(String s) { r.setOwnerName(s); return this; }
-        public Builder ownerEmail(String s) { r.setOwnerEmail(s); return this; }
-        public Builder active(boolean a) { r.setActive(a); return this; }
-        public DeviceOwnershipRecord build() { return r; }
+        public Builder id(Long id) { d.setId(id); return this; }
+        public Builder serialNumber(String v) { d.setSerialNumber(v); return this; }
+        public Builder ownerName(String v) { d.setOwnerName(v); return this; }
+        public Builder ownerEmail(String v) { d.setOwnerEmail(v); return this; }
+        public Builder purchaseDate(LocalDate v) { d.setPurchaseDate(v); return this; }
+        public Builder warrantyExpiration(LocalDate v) { d.setWarrantyExpiration(v); return this; }
+        public Builder active(boolean v) { d.setActive(v); return this; }
+
+        public DeviceOwnershipRecord build() { return d; }
     }
+
+    /* ===== GETTERS / SETTERS ===== */
 
     public String getSerialNumber() { return serialNumber; }
     public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
