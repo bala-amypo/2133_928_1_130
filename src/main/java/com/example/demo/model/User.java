@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,71 +12,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
     private String email;
     private String password;
-    private LocalDateTime createdAt;
 
-    @ElementCollection
-    private Set<String> roles;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> roles = new HashSet<>(Set.of("ROLE_USER"));
 
-    public User() {}
-
-    // REQUIRED BY TESTS
-    public void setId(long id) {
-        this.id = id;
+    public User() {
+        // default role
+        this.roles = new HashSet<>(Set.of("ROLE_USER"));
     }
 
     public Long getId() {
         return id;
     }
 
-    // REQUIRED BUILDER
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private final User u = new User();
-
-        public Builder id(Long id) {
-            u.setId(id);
-            return this;
-        }
-
-        public Builder name(String name) {
-            u.setName(name);
-            return this;
-        }
-
-        public Builder email(String email) {
-            u.setEmail(email);
-            return this;
-        }
-
-        public Builder password(String password) {
-            u.setPassword(password);
-            return this;
-        }
-
-        public Builder roles(Set<String> roles) {
-            u.setRoles(roles);
-            return this;
-        }
-
-        public User build() {
-            return u;
-        }
-    }
-
-    // GETTERS / SETTERS
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -90,7 +42,7 @@ public class User {
     public String getPassword() {
         return password;
     }
-
+ 
     public void setPassword(String password) {
         this.password = password;
     }
@@ -100,14 +52,10 @@ public class User {
     }
 
     public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+        if (roles == null || roles.isEmpty()) {
+            this.roles = new HashSet<>(Set.of("ROLE_USER"));
+        } else {
+            this.roles = roles;
+        }
     }
 }
