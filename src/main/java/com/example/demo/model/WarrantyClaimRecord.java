@@ -40,4 +40,8 @@ public class WarrantyClaimRecord {
     public void setStatus(String status) {
         this.status = status;
     }
+    public String getClaimReason() {
+    return claimReason;
+}
+
 }
