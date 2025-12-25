@@ -16,11 +16,13 @@ public class AuthController {
     private final UserService userService;
     private final JwtTokenProvider tokenProvider;
 
-    public AuthController(UserService userService,
-                          JwtTokenProvider tokenProvider) {
-        this.userService = userService;
-        this.tokenProvider = tokenProvider;
-    }
+    public AuthController(UserRepository userRepository,
+                      PasswordEncoder passwordEncoder,
+                      JwtTokenProvider jwtTokenProvider) {
+    this.userService = new UserServiceImpl(userRepository, passwordEncoder);
+    this.jwtTokenProvider = jwtTokenProvider;
+}
+
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {

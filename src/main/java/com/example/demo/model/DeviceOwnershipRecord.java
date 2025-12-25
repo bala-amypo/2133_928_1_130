@@ -85,4 +85,8 @@ public class DeviceOwnershipRecord {
     public void setActive(Boolean active) {
         this.active = active;
     }
+    public boolean isEmpty() {
+    return this.serialNumber == null || this.serialNumber.isBlank();
+}
+
 }
