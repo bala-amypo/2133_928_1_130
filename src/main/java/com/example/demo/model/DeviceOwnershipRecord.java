@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
+
 
 @Entity
 public class DeviceOwnershipRecord {
@@ -14,6 +16,12 @@ public class DeviceOwnershipRecord {
     private boolean active;
 
     private boolean stolen;
+    private LocalDate warrantyExpiration;
+
+public LocalDate getWarrantyExpiration() {
+    return warrantyExpiration;
+}
+
 
     public DeviceOwnershipRecord() {
     }
@@ -49,4 +57,6 @@ public class DeviceOwnershipRecord {
     public void setStolen(boolean stolen) {
         this.stolen = stolen;
     }
+    getWarrantyExpiration()
+
 }
