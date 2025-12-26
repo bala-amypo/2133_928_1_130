@@ -18,7 +18,6 @@ public class DeviceOwnershipRecord {
     private Boolean active = true;
     private Boolean stolen = false;
 
-    // 🔧 REQUIRED BY WarrantyClaimServiceImpl
     private LocalDate warrantyExpiration;
 
     public DeviceOwnershipRecord() {
@@ -76,7 +75,6 @@ public class DeviceOwnershipRecord {
         this.stolen = stolen;
     }
 
-    // 🔧 FIX FOR COMPILATION ERROR
     public LocalDate getWarrantyExpiration() {
         return warrantyExpiration;
     }
@@ -86,7 +84,17 @@ public class DeviceOwnershipRecord {
     }
 
     // =====================
-    // BUILDER (TEST SUPPORT)
+    // 🔧 TEST SUPPORT METHOD
+    // =====================
+    public boolean isEmpty() {
+        return this.id == null
+                && this.serialNumber == null
+                && this.ownerName == null
+                && this.ownerEmail == null;
+    }
+
+    // =====================
+    // BUILDER
     // =====================
 
     public static Builder builder() {
@@ -127,7 +135,6 @@ public class DeviceOwnershipRecord {
             return this;
         }
 
-        // 🔧 REQUIRED BY WARRANTY CLAIM TESTS
         public Builder warrantyExpiration(LocalDate warrantyExpiration) {
             record.setWarrantyExpiration(warrantyExpiration);
             return this;
