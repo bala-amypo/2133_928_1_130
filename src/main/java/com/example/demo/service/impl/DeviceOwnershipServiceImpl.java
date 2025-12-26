@@ -17,10 +17,21 @@ public class DeviceOwnershipServiceImpl implements DeviceOwnershipService {
         this.repository = repository;
     }
 
-    // ✅ MUST MATCH INTERFACE
     @Override
-    public DeviceOwnershipRecord registerDevice(DeviceOwnershipRecord record) {
-        return repository.save(record);
+    public DeviceOwnershipRecord registerDevice(DeviceOwnershipRecord device) {
+
+        // FIX: duplicate serial
+        if (repository.findBySerialNumber(device.getSerialNumber()).isPresent()) {
+            throw new RuntimeException("Duplicate serial");
+        }
+
+        return repository.save(device);
+    }
+
+    @Override
+    public DeviceOwnershipRecord getDeviceBySerial(String serial) {
+        return repository.findBySerialNumber(serial)
+                .orElseThrow(() -> new NoSuchElementException("Device not found"));
     }
 
     @Override
@@ -29,17 +40,10 @@ public class DeviceOwnershipServiceImpl implements DeviceOwnershipService {
     }
 
     @Override
-    public DeviceOwnershipRecord getBySerial(String serialNumber) {
-        return repository.findBySerialNumber(serialNumber)
-                .orElseThrow(NoSuchElementException::new);
-    }
-
-    @Override
     public DeviceOwnershipRecord updateDeviceStatus(Long id, boolean active) {
-        DeviceOwnershipRecord record = repository.findById(id)
-                .orElseThrow(NoSuchElementException::new);
-
-        record.setActive(active);
-        return repository.save(record);
+        DeviceOwnershipRecord d = repository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Not found"));
+        d.setActive(active);
+        return repository.save(d);
     }
 }

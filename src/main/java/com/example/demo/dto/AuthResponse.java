@@ -9,7 +9,8 @@ public class AuthResponse {
     private String email;
     private Set<String> roles;
 
-    public AuthResponse() {}
+    public AuthResponse() {
+    }
 
     public AuthResponse(String token) {
         this.token = token;
@@ -22,8 +23,21 @@ public class AuthResponse {
         this.roles = roles;
     }
 
-    public String getToken() { return token; }
-    public Long getUserId() { return userId; }
-    public String getEmail() { return email; }
-    public Set<String> getRoles() { return roles; }
+    // ===== Getters =====
+
+    public String getToken() {
+        return token;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Set<String> getRoles() {
+        return roles;
+    }
 }
