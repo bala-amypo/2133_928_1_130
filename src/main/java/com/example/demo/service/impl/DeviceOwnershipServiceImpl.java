@@ -1,37 +1,31 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.DeviceOwnershipRecord;
-import com.example.demo.repository.DeviceOwnershipRecordRepository;
+import com.example.demo.repository.DeviceOwnershipRepository;
 import com.example.demo.service.DeviceOwnershipService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class DeviceOwnershipServiceImpl implements DeviceOwnershipService {
 
-    private final DeviceOwnershipRecordRepository repository;
+    private final DeviceOwnershipRepository repository;
 
-    public DeviceOwnershipServiceImpl(DeviceOwnershipRecordRepository repository) {
+    public DeviceOwnershipServiceImpl(DeviceOwnershipRepository repository) {
         this.repository = repository;
     }
 
     @Override
     public DeviceOwnershipRecord registerDevice(DeviceOwnershipRecord device) {
-
-        // FIX: duplicate serial
-        if (repository.findBySerialNumber(device.getSerialNumber()).isPresent()) {
-            throw new RuntimeException("Duplicate serial");
-        }
-
         return repository.save(device);
     }
 
     @Override
-    public DeviceOwnershipRecord getDeviceBySerial(String serial) {
+    public DeviceOwnershipRecord getBySerial(String serial) {
         return repository.findBySerialNumber(serial)
-                .orElseThrow(() -> new NoSuchElementException("Device not found"));
+                .orElseThrow(() -> new RuntimeException("Device not found"));
     }
 
     @Override
@@ -41,9 +35,9 @@ public class DeviceOwnershipServiceImpl implements DeviceOwnershipService {
 
     @Override
     public DeviceOwnershipRecord updateDeviceStatus(Long id, boolean active) {
-        DeviceOwnershipRecord d = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Not found"));
-        d.setActive(active);
-        return repository.save(d);
+        DeviceOwnershipRecord device = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Device not found"));
+        device.setActive(active);
+        return repository.save(device);
     }
 }

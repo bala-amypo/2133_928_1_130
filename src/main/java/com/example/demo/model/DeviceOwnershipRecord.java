@@ -19,6 +19,9 @@ public class DeviceOwnershipRecord {
     private LocalDate warrantyExpiration;
     private boolean active;
     private LocalDateTime createdAt;
+    // ADD this field with other fields
+private boolean stolen;
+
 
     public DeviceOwnershipRecord() {}
 
@@ -75,4 +78,9 @@ public class DeviceOwnershipRecord {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    // ADD this method at the bottom of the class
+public void setStolen(boolean stolen) {
+    this.stolen = stolen;
+}
+
 }
