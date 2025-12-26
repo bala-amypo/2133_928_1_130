@@ -5,9 +5,19 @@ public class AuthRequest {
     private String email;
     private String password;
 
+    // ✅ REQUIRED by Jackson + tests
     public AuthRequest() {
     }
 
+    // ✅ REQUIRED by AuthController + tests
+    public AuthRequest(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    // =====================
+    // GETTERS / SETTERS
+    // =====================
     public String getEmail() {
         return email;
     }
