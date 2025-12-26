@@ -15,13 +15,13 @@ public class StolenDeviceServiceImpl implements StolenDeviceService {
     private final StolenDeviceReportRepository stolenRepo;
     private final DeviceOwnershipRecordRepository deviceRepo;
 
-    // ✅ Spring constructor
+    // Spring constructor
     public StolenDeviceServiceImpl(StolenDeviceReportRepository stolenRepo) {
         this.stolenRepo = stolenRepo;
         this.deviceRepo = null;
     }
 
-    // ✅ Test constructor (DO NOT REMOVE)
+    // Test constructor (DO NOT REMOVE)
     public StolenDeviceServiceImpl(
             StolenDeviceReportRepository stolenRepo,
             DeviceOwnershipRecordRepository deviceRepo
@@ -30,27 +30,31 @@ public class StolenDeviceServiceImpl implements StolenDeviceService {
         this.deviceRepo = deviceRepo;
     }
 
-    // ✅ REQUIRED BY INTERFACE
+    // ✔ REQUIRED BY INTERFACE
     @Override
     public StolenDeviceReport reportStolen(StolenDeviceReport report) {
         return stolenRepo.save(report);
     }
 
-    @Override
+    // ✔ Helper method used by tests / internal logic
+    // ❗ NOT part of interface → NO @Override
     public StolenDeviceReport save(StolenDeviceReport report) {
         return stolenRepo.save(report);
     }
 
+    // ✔ REQUIRED BY INTERFACE
     @Override
     public List<StolenDeviceReport> getAllReports() {
         return stolenRepo.findAll();
     }
 
+    // ✔ REQUIRED BY INTERFACE
     @Override
     public Optional<StolenDeviceReport> getReportById(Long id) {
         return stolenRepo.findById(id);
     }
 
+    // ✔ REQUIRED BY INTERFACE
     @Override
     public List<StolenDeviceReport> getReportsBySerial(String serial) {
         return stolenRepo.findBySerialNumber(serial);
