@@ -3,7 +3,6 @@ package com.example.demo.service.impl;
 import com.example.demo.model.DeviceOwnershipRecord;
 import com.example.demo.repository.DeviceOwnershipRecordRepository;
 import com.example.demo.service.DeviceOwnershipService;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +27,7 @@ public class DeviceOwnershipServiceImpl implements DeviceOwnershipService {
     }
 
     /**
-     * FIXED: must NOT throw when device is missing.
-     * Test expects Optional.empty()
+     * CORRECT: return Optional, do NOT throw
      */
     @Override
     public Optional<DeviceOwnershipRecord> getBySerial(String serial) {
