@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 
 @Entity
+@Table(name = "device_ownership")
 public class DeviceOwnershipRecord {
 
     @Id
@@ -11,16 +11,21 @@ public class DeviceOwnershipRecord {
     private Long id;
 
     private String serialNumber;
+
     private String ownerName;
 
-    private boolean stolen;
-    private boolean active = true;   // ✅ ADDED (default true)
+    private String ownerEmail;
 
-    private LocalDate warrantyExpiration;
+    private Boolean active = true;
 
-    public DeviceOwnershipRecord() {}
+    private Boolean stolen = false;
 
-    // ===== GETTERS / SETTERS =====
+    public DeviceOwnershipRecord() {
+    }
+
+    // =====================
+    // GETTERS & SETTERS
+    // =====================
 
     public Long getId() {
         return id;
@@ -46,78 +51,78 @@ public class DeviceOwnershipRecord {
         this.ownerName = ownerName;
     }
 
-    public boolean isStolen() {
-        return stolen;
+    // 🔧 REQUIRED BY TESTS
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
-    public void setStolen(boolean stolen) {
-        this.stolen = stolen;
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 
-    // ✅ REQUIRED BY DeviceOwnershipServiceImpl
-    public boolean isActive() {
+    // 🔧 REQUIRED BY TESTS
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
-    public LocalDate getWarrantyExpiration() {
-        return warrantyExpiration;
+    public Boolean getStolen() {
+        return stolen;
     }
 
-    public void setWarrantyExpiration(LocalDate warrantyExpiration) {
-        this.warrantyExpiration = warrantyExpiration;
+    public void setStolen(Boolean stolen) {
+        this.stolen = stolen;
     }
 
-    // ===== TEST HELPERS =====
-
-    public boolean isEmpty() {
-        return serialNumber == null || serialNumber.isBlank();
-    }
-
-    // ===== BUILDER (TEST REQUIRED) =====
+    // =====================
+    // BUILDER (TEST FIX)
+    // =====================
 
     public static Builder builder() {
         return new Builder();
     }
 
     public static class Builder {
-        private final DeviceOwnershipRecord d = new DeviceOwnershipRecord();
+
+        private final DeviceOwnershipRecord record = new DeviceOwnershipRecord();
 
         public Builder id(Long id) {
-            d.setId(id);
+            record.setId(id);
             return this;
         }
 
-        public Builder serialNumber(String serial) {
-            d.setSerialNumber(serial);
+        public Builder serialNumber(String serialNumber) {
+            record.setSerialNumber(serialNumber);
             return this;
         }
 
-        public Builder ownerName(String owner) {
-            d.setOwnerName(owner);
+        public Builder ownerName(String ownerName) {
+            record.setOwnerName(ownerName);
             return this;
         }
 
-        public Builder stolen(boolean stolen) {
-            d.setStolen(stolen);
+        // 🔧 REQUIRED BY TESTS
+        public Builder ownerEmail(String ownerEmail) {
+            record.setOwnerEmail(ownerEmail);
             return this;
         }
 
-        public Builder active(boolean active) {
-            d.setActive(active);
+        // 🔧 REQUIRED BY TESTS
+        public Builder active(Boolean active) {
+            record.setActive(active);
             return this;
         }
 
-        public Builder warrantyExpiration(LocalDate date) {
-            d.setWarrantyExpiration(date);
+        public Builder stolen(Boolean stolen) {
+            record.setStolen(stolen);
             return this;
         }
 
         public DeviceOwnershipRecord build() {
-            return d;
+            return record;
         }
     }
 }

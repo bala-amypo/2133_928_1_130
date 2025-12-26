@@ -1,11 +1,9 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.DeviceOwnershipRecord;
 import com.example.demo.model.StolenDeviceReport;
-import com.example.demo.repository.DeviceOwnershipRecordRepository;
 import com.example.demo.repository.StolenDeviceReportRepository;
+import com.example.demo.repository.DeviceOwnershipRecordRepository;
 import com.example.demo.service.StolenDeviceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +16,13 @@ public class StolenDeviceServiceImpl implements StolenDeviceService {
     private final StolenDeviceReportRepository stolenDeviceReportRepository;
     private final DeviceOwnershipRecordRepository deviceOwnershipRecordRepository;
 
-    // ✅ REQUIRED BY TESTS
-    @Autowired
+    // 🔧 REQUIRED BY SPRING
+    public StolenDeviceServiceImpl() {
+        this.stolenDeviceReportRepository = null;
+        this.deviceOwnershipRecordRepository = null;
+    }
+
+    // 🔧 REQUIRED BY TESTS
     public StolenDeviceServiceImpl(
             StolenDeviceReportRepository stolenDeviceReportRepository,
             DeviceOwnershipRecordRepository deviceOwnershipRecordRepository
@@ -47,10 +50,7 @@ public class StolenDeviceServiceImpl implements StolenDeviceService {
     public List<StolenDeviceReport> getReportsBySerial(String serial) {
         return stolenDeviceReportRepository.findAll()
                 .stream()
-                .filter(r ->
-                        r.getSerialNumber() != null &&
-                        r.getSerialNumber().equals(serial)
-                )
+                .filter(r -> serial.equals(r.getSerialNumber()))
                 .collect(Collectors.toList());
     }
 }
