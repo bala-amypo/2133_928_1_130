@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class DeviceOwnershipServiceImpl implements DeviceOwnershipService {
@@ -27,8 +26,9 @@ public class DeviceOwnershipServiceImpl implements DeviceOwnershipService {
     }
 
     @Override
-    public Optional<DeviceOwnershipRecord> getBySerial(String serial) {
-        return repo.findBySerialNumber(serial);
+    public DeviceOwnershipRecord getBySerial(String serial) {
+        return repo.findBySerialNumber(serial)
+                .orElseThrow(() -> new NoSuchElementException("Device not found"));
     }
 
     @Override
