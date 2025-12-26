@@ -15,19 +15,25 @@ public class StolenDeviceServiceImpl implements StolenDeviceService {
     private final StolenDeviceReportRepository stolenRepo;
     private final DeviceOwnershipRecordRepository deviceRepo;
 
-    // ✅ EXISTING constructor (KEEP – Spring uses this)
+    // ✅ Spring constructor
     public StolenDeviceServiceImpl(StolenDeviceReportRepository stolenRepo) {
         this.stolenRepo = stolenRepo;
         this.deviceRepo = null;
     }
 
-    // ✅ REQUIRED by tests (DO NOT REMOVE)
+    // ✅ Test constructor (DO NOT REMOVE)
     public StolenDeviceServiceImpl(
             StolenDeviceReportRepository stolenRepo,
             DeviceOwnershipRecordRepository deviceRepo
     ) {
         this.stolenRepo = stolenRepo;
         this.deviceRepo = deviceRepo;
+    }
+
+    // ✅ REQUIRED BY INTERFACE
+    @Override
+    public StolenDeviceReport reportStolen(StolenDeviceReport report) {
+        return stolenRepo.save(report);
     }
 
     @Override

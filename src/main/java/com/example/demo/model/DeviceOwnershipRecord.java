@@ -12,7 +12,10 @@ public class DeviceOwnershipRecord {
 
     private String serialNumber;
     private String ownerName;
+
     private boolean stolen;
+    private boolean active = true;   // ✅ ADDED (default true)
+
     private LocalDate warrantyExpiration;
 
     public DeviceOwnershipRecord() {}
@@ -51,6 +54,15 @@ public class DeviceOwnershipRecord {
         this.stolen = stolen;
     }
 
+    // ✅ REQUIRED BY DeviceOwnershipServiceImpl
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public LocalDate getWarrantyExpiration() {
         return warrantyExpiration;
     }
@@ -59,13 +71,13 @@ public class DeviceOwnershipRecord {
         this.warrantyExpiration = warrantyExpiration;
     }
 
-    // ===== TEST-REQUIRED METHODS =====
+    // ===== TEST HELPERS =====
 
     public boolean isEmpty() {
         return serialNumber == null || serialNumber.isBlank();
     }
 
-    // ===== BUILDER (REQUIRED BY TESTS) =====
+    // ===== BUILDER (TEST REQUIRED) =====
 
     public static Builder builder() {
         return new Builder();
@@ -84,13 +96,18 @@ public class DeviceOwnershipRecord {
             return this;
         }
 
-        public Builder ownerName(String ownerName) {
-            d.setOwnerName(ownerName);
+        public Builder ownerName(String owner) {
+            d.setOwnerName(owner);
             return this;
         }
 
         public Builder stolen(boolean stolen) {
             d.setStolen(stolen);
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            d.setActive(active);
             return this;
         }
 
