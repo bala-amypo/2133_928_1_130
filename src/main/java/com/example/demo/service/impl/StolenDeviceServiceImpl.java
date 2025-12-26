@@ -1,41 +1,42 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.DeviceOwnershipRecord;
-import com.example.demo.model.StolenDeviceReport;
-import com.example.demo.repository.DeviceOwnershipRepository;
-import com.example.demo.repository.StolenDeviceReportRepository;
-import com.example.demo.service.StolenDeviceService;
+import com.example.demo.repository.DeviceOwnershipRecordRepository;
+import com.example.demo.service.DeviceOwnershipService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class StolenDeviceServiceImpl implements StolenDeviceService {
+public class DeviceOwnershipServiceImpl implements DeviceOwnershipService {
 
-    private final StolenDeviceReportRepository reportRepository;
-    private final DeviceOwnershipRepository deviceRepository;
+    private final DeviceOwnershipRecordRepository repository;
 
-    public StolenDeviceServiceImpl(
-            StolenDeviceReportRepository reportRepository,
-            DeviceOwnershipRepository deviceRepository) {
-        this.reportRepository = reportRepository;
-        this.deviceRepository = deviceRepository;
+    public DeviceOwnershipServiceImpl(DeviceOwnershipRecordRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public StolenDeviceReport reportStolen(StolenDeviceReport report) {
-        DeviceOwnershipRecord device = deviceRepository
-                .findBySerialNumber(report.getSerialNumber())
+    public DeviceOwnershipRecord registerDevice(DeviceOwnershipRecord device) {
+        return repository.save(device);
+    }
+
+    @Override
+    public DeviceOwnershipRecord getBySerial(String serial) {
+        return repository.findBySerialNumber(serial)
                 .orElseThrow(() -> new RuntimeException("Device not found"));
-
-        device.setStolen(true);
-        deviceRepository.save(device);
-
-        return reportRepository.save(report);
     }
 
     @Override
-    public List<StolenDeviceReport> getAllReports() {
-        return reportRepository.findAll();
+    public List<DeviceOwnershipRecord> getAllDevices() {
+        return repository.findAll();
+    }
+
+    @Override
+    public DeviceOwnershipRecord updateDeviceStatus(Long id, boolean active) {
+        DeviceOwnershipRecord device = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Device not found"));
+        device.setActive(active);
+        return repository.save(device);
     }
 }
