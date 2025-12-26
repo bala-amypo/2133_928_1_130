@@ -1,47 +1,27 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.StolenDeviceReport;
+import com.example.demo.model.DeviceOwnershipRecord;
 import com.example.demo.repository.DeviceOwnershipRecordRepository;
-import com.example.demo.repository.StolenDeviceReportRepository;
 import com.example.demo.service.StolenDeviceService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class StolenDeviceServiceImpl implements StolenDeviceService {
 
-    private final StolenDeviceReportRepository reportRepository;
-    private final DeviceOwnershipRecordRepository deviceRepository;
+    private final DeviceOwnershipRecordRepository repository;
 
-    public StolenDeviceServiceImpl(StolenDeviceReportRepository reportRepository,
-                                   DeviceOwnershipRecordRepository deviceRepository) {
-        this.reportRepository = reportRepository;
-        this.deviceRepository = deviceRepository;
+    public StolenDeviceServiceImpl(DeviceOwnershipRecordRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public StolenDeviceReport reportStolen(StolenDeviceReport report) {
-        if (!deviceRepository.existsBySerialNumber(report.getSerialNumber())) {
-            throw new NoSuchElementException("Device not found");
-        }
-        return reportRepository.save(report);
-    }
+    public DeviceOwnershipRecord reportStolen(String serial) {
 
-    @Override
-    public List<StolenDeviceReport> getReportsBySerial(String serialNumber) {
-        return reportRepository.findBySerialNumber(serialNumber);
-    }
+        DeviceOwnershipRecord device = repository.findBySerialNumber(serial)
+                .orElseThrow(() -> new RuntimeException("Device not found"));
 
-    @Override
-    public Optional<StolenDeviceReport> getReportById(Long id) {
-        return reportRepository.findById(id);
-    }
-
-    @Override
-    public List<StolenDeviceReport> getAllReports() {
-        return reportRepository.findAll();
+        // FIX: mark stolen
+        device.setStolen(true);
+        return repository.save(device);
     }
 }
