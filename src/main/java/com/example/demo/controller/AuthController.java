@@ -1,55 +1,78 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.dto.RegisterRequest;
+import com.example.demo.dto.*;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtTokenProvider;
-import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    // ===== Spring runtime injection =====
-    @Autowired
-    private UserService userService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    // ===== Test-only dependencies =====
-    private UserRepository userRepository;
-    private Object passwordEncoder; // test stub type
-    private JwtTokenProvider jwtTokenProvider;
-
-    // ✅ REQUIRED BY SPRING
-    public AuthController() {
-    }
-
-    // ✅ REQUIRED BY TEST CASES (DO NOT CHANGE)
-    public AuthController(
-            UserRepository userRepository,
-            Object passwordEncoder,
-            JwtTokenProvider jwtTokenProvider
-    ) {
+    public AuthController(UserRepository userRepository,
+                          PasswordEncoder passwordEncoder,
+                          JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
-        AuthResponse response = userService.registerUser(
-                new AuthRequest(request.getEmail(), request.getPassword())
+    public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
+
+        if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        User user = User.builder()
+                .email(req.getEmail())
+                .name(req.getName())
+                .password(passwordEncoder.encode(req.getPassword()))
+                .roles(req.getRoles() == null ? Set.of("USER") : req.getRoles())
+                .build();
+
+        user = userRepository.save(user);
+
+        String token = jwtTokenProvider.createToken(
+                user.getId(),
+                user.getEmail(),
+                user.getRoles()
         );
-        return ResponseEntity.ok(response);
+
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        AuthResponse response = userService.loginUser(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> login(@RequestBody AuthRequest req) {
+
+        Optional<User> opt = userRepository.findByEmail(req.getEmail());
+        if (opt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = opt.get();
+
+        if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String token = jwtTokenProvider.createToken(
+                user.getId(),
+                user.getEmail(),
+                user.getRoles()
+        );
+
+        return ResponseEntity.ok(new AuthResponse(token));
     }
 }

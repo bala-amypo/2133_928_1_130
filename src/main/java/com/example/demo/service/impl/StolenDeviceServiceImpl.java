@@ -1,56 +1,41 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.StolenDeviceReport;
-import com.example.demo.repository.StolenDeviceReportRepository;
 import com.example.demo.repository.DeviceOwnershipRecordRepository;
+import com.example.demo.repository.StolenDeviceReportRepository;
 import com.example.demo.service.StolenDeviceService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
 
 @Service
 public class StolenDeviceServiceImpl implements StolenDeviceService {
 
-    private final StolenDeviceReportRepository stolenDeviceReportRepository;
-    private final DeviceOwnershipRecordRepository deviceOwnershipRecordRepository;
+    private final StolenDeviceReportRepository stolenRepo;
+    private final DeviceOwnershipRecordRepository deviceRepo;
 
-    // 🔧 REQUIRED BY SPRING
-    public StolenDeviceServiceImpl() {
-        this.stolenDeviceReportRepository = null;
-        this.deviceOwnershipRecordRepository = null;
-    }
-
-    // 🔧 REQUIRED BY TESTS
-    public StolenDeviceServiceImpl(
-            StolenDeviceReportRepository stolenDeviceReportRepository,
-            DeviceOwnershipRecordRepository deviceOwnershipRecordRepository
-    ) {
-        this.stolenDeviceReportRepository = stolenDeviceReportRepository;
-        this.deviceOwnershipRecordRepository = deviceOwnershipRecordRepository;
+    public StolenDeviceServiceImpl(StolenDeviceReportRepository stolenRepo,
+                                   DeviceOwnershipRecordRepository deviceRepo) {
+        this.stolenRepo = stolenRepo;
+        this.deviceRepo = deviceRepo;
     }
 
     @Override
     public StolenDeviceReport reportStolen(StolenDeviceReport report) {
-        return stolenDeviceReportRepository.save(report);
+        if (deviceRepo.findBySerialNumber(report.getSerialNumber()).isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return stolenRepo.save(report);
     }
 
     @Override
     public List<StolenDeviceReport> getAllReports() {
-        return stolenDeviceReportRepository.findAll();
-    }
-
-    @Override
-    public Optional<StolenDeviceReport> getReportById(Long id) {
-        return stolenDeviceReportRepository.findById(id);
+        return stolenRepo.findAll();
     }
 
     @Override
     public List<StolenDeviceReport> getReportsBySerial(String serial) {
-        return stolenDeviceReportRepository.findAll()
-                .stream()
-                .filter(r -> serial.equals(r.getSerialNumber()))
-                .collect(Collectors.toList());
+        return stolenRepo.findBySerialNumber(serial);
     }
 }
