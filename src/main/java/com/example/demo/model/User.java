@@ -13,8 +13,11 @@ public class User {
     private String email;
     private String password;
 
+    
+    
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles;
+private Set<String> roles = new HashSet<>();
+
 
     public User() {}
 
@@ -85,4 +88,5 @@ public class User {
             return u;
         }
     }
+    
 }
