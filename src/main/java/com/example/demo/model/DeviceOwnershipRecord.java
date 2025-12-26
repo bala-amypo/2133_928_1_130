@@ -4,85 +4,103 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "device_ownership")
 public class DeviceOwnershipRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
     private String serialNumber;
-
-    private boolean active = true;
-
-    private boolean stolen = false;
-
+    private String ownerName;
+    private boolean stolen;
     private LocalDate warrantyExpiration;
 
-    /* =========================
-       CONSTRUCTORS
-       ========================= */
+    public DeviceOwnershipRecord() {}
 
-    public DeviceOwnershipRecord() {
-    }
-
-    public DeviceOwnershipRecord(String serialNumber, LocalDate warrantyExpiration) {
-        this.serialNumber = serialNumber;
-        this.warrantyExpiration = warrantyExpiration;
-        this.active = true;
-        this.stolen = false;
-    }
-
-    /* =========================
-       GETTERS
-       ========================= */
+    // ===== GETTERS / SETTERS =====
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getSerialNumber() {
         return serialNumber;
     }
 
-    public boolean getActive() {
-        return active;
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
-    public boolean isActive() {
-        return active;
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public boolean isStolen() {
         return stolen;
     }
 
-    public LocalDate getWarrantyExpiration() {
-        return warrantyExpiration;
-    }
-
-    /* =========================
-       SETTERS
-       ========================= */
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public void setStolen(boolean stolen) {
         this.stolen = stolen;
     }
 
+    public LocalDate getWarrantyExpiration() {
+        return warrantyExpiration;
+    }
+
     public void setWarrantyExpiration(LocalDate warrantyExpiration) {
         this.warrantyExpiration = warrantyExpiration;
+    }
+
+    // ===== TEST-REQUIRED METHODS =====
+
+    public boolean isEmpty() {
+        return serialNumber == null || serialNumber.isBlank();
+    }
+
+    // ===== BUILDER (REQUIRED BY TESTS) =====
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private final DeviceOwnershipRecord d = new DeviceOwnershipRecord();
+
+        public Builder id(Long id) {
+            d.setId(id);
+            return this;
+        }
+
+        public Builder serialNumber(String serial) {
+            d.setSerialNumber(serial);
+            return this;
+        }
+
+        public Builder ownerName(String ownerName) {
+            d.setOwnerName(ownerName);
+            return this;
+        }
+
+        public Builder stolen(boolean stolen) {
+            d.setStolen(stolen);
+            return this;
+        }
+
+        public Builder warrantyExpiration(LocalDate date) {
+            d.setWarrantyExpiration(date);
+            return this;
+        }
+
+        public DeviceOwnershipRecord build() {
+            return d;
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.StolenDeviceReport;
 import com.example.demo.repository.StolenDeviceReportRepository;
+import com.example.demo.repository.DeviceOwnershipRecordRepository;
 import com.example.demo.service.StolenDeviceService;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,25 @@ import java.util.Optional;
 public class StolenDeviceServiceImpl implements StolenDeviceService {
 
     private final StolenDeviceReportRepository stolenRepo;
+    private final DeviceOwnershipRecordRepository deviceRepo;
 
+    // ✅ EXISTING constructor (KEEP – Spring uses this)
     public StolenDeviceServiceImpl(StolenDeviceReportRepository stolenRepo) {
         this.stolenRepo = stolenRepo;
+        this.deviceRepo = null;
+    }
+
+    // ✅ REQUIRED by tests (DO NOT REMOVE)
+    public StolenDeviceServiceImpl(
+            StolenDeviceReportRepository stolenRepo,
+            DeviceOwnershipRecordRepository deviceRepo
+    ) {
+        this.stolenRepo = stolenRepo;
+        this.deviceRepo = deviceRepo;
     }
 
     @Override
-    public StolenDeviceReport reportStolen(StolenDeviceReport report) {
+    public StolenDeviceReport save(StolenDeviceReport report) {
         return stolenRepo.save(report);
     }
 
@@ -32,12 +45,8 @@ public class StolenDeviceServiceImpl implements StolenDeviceService {
         return stolenRepo.findById(id);
     }
 
-    /* =========================================================
-       🔧 FIX: MISSING METHOD REQUIRED BY INTERFACE
-       ========================================================= */
-
     @Override
-    public List<StolenDeviceReport> getReportsBySerial(String serialNumber) {
-        return stolenRepo.findBySerialNumber(serialNumber);
+    public List<StolenDeviceReport> getReportsBySerial(String serial) {
+        return stolenRepo.findBySerialNumber(serial);
     }
 }
