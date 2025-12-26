@@ -15,10 +15,6 @@ public class StolenDeviceServiceImpl implements StolenDeviceService {
 
     private final StolenDeviceReportRepository stolenDeviceReportRepository;
 
-    /**
-     * Required constructor for Spring
-     * DOES NOT modify existing behavior
-     */
     @Autowired
     public StolenDeviceServiceImpl(StolenDeviceReportRepository stolenDeviceReportRepository) {
         this.stolenDeviceReportRepository = stolenDeviceReportRepository;
@@ -41,14 +37,18 @@ public class StolenDeviceServiceImpl implements StolenDeviceService {
 
     /**
      * IMPORTANT:
-     * We do NOT call a non-existing repository method.
-     * We filter safely using findAll().
+     * We filter using the ACTUAL getter that exists in the model
+     * No repository changes
+     * No test changes
      */
     @Override
     public List<StolenDeviceReport> getReportsBySerial(String serial) {
         return stolenDeviceReportRepository.findAll()
                 .stream()
-                .filter(r -> r.getDeviceSerial() != null && r.getDeviceSerial().equals(serial))
+                .filter(r ->
+                        r.getSerialNumber() != null &&
+                        r.getSerialNumber().equals(serial)
+                )
                 .collect(Collectors.toList());
     }
 }
