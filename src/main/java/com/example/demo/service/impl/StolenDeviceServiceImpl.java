@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StolenDeviceServiceImpl implements StolenDeviceService {
@@ -15,9 +16,8 @@ public class StolenDeviceServiceImpl implements StolenDeviceService {
     private final StolenDeviceReportRepository stolenDeviceReportRepository;
 
     /**
-     * ✔ REQUIRED constructor for Spring
-     * ✔ Does NOT remove any existing logic
-     * ✔ Fixes: No default constructor found
+     * Required constructor for Spring
+     * DOES NOT modify existing behavior
      */
     @Autowired
     public StolenDeviceServiceImpl(StolenDeviceReportRepository stolenDeviceReportRepository) {
@@ -39,8 +39,16 @@ public class StolenDeviceServiceImpl implements StolenDeviceService {
         return stolenDeviceReportRepository.findById(id);
     }
 
+    /**
+     * IMPORTANT:
+     * We do NOT call a non-existing repository method.
+     * We filter safely using findAll().
+     */
     @Override
     public List<StolenDeviceReport> getReportsBySerial(String serial) {
-        return stolenDeviceReportRepository.findByDeviceSerial(serial);
+        return stolenDeviceReportRepository.findAll()
+                .stream()
+                .filter(r -> r.getDeviceSerial() != null && r.getDeviceSerial().equals(serial))
+                .collect(Collectors.toList());
     }
 }
