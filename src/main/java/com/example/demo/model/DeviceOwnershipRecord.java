@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "device_ownership")
@@ -11,14 +12,14 @@ public class DeviceOwnershipRecord {
     private Long id;
 
     private String serialNumber;
-
     private String ownerName;
-
     private String ownerEmail;
 
     private Boolean active = true;
-
     private Boolean stolen = false;
+
+    // 🔧 REQUIRED BY WarrantyClaimServiceImpl
+    private LocalDate warrantyExpiration;
 
     public DeviceOwnershipRecord() {
     }
@@ -51,7 +52,6 @@ public class DeviceOwnershipRecord {
         this.ownerName = ownerName;
     }
 
-    // 🔧 REQUIRED BY TESTS
     public String getOwnerEmail() {
         return ownerEmail;
     }
@@ -60,7 +60,6 @@ public class DeviceOwnershipRecord {
         this.ownerEmail = ownerEmail;
     }
 
-    // 🔧 REQUIRED BY TESTS
     public Boolean getActive() {
         return active;
     }
@@ -77,8 +76,17 @@ public class DeviceOwnershipRecord {
         this.stolen = stolen;
     }
 
+    // 🔧 FIX FOR COMPILATION ERROR
+    public LocalDate getWarrantyExpiration() {
+        return warrantyExpiration;
+    }
+
+    public void setWarrantyExpiration(LocalDate warrantyExpiration) {
+        this.warrantyExpiration = warrantyExpiration;
+    }
+
     // =====================
-    // BUILDER (TEST FIX)
+    // BUILDER (TEST SUPPORT)
     // =====================
 
     public static Builder builder() {
@@ -104,13 +112,11 @@ public class DeviceOwnershipRecord {
             return this;
         }
 
-        // 🔧 REQUIRED BY TESTS
         public Builder ownerEmail(String ownerEmail) {
             record.setOwnerEmail(ownerEmail);
             return this;
         }
 
-        // 🔧 REQUIRED BY TESTS
         public Builder active(Boolean active) {
             record.setActive(active);
             return this;
@@ -118,6 +124,12 @@ public class DeviceOwnershipRecord {
 
         public Builder stolen(Boolean stolen) {
             record.setStolen(stolen);
+            return this;
+        }
+
+        // 🔧 REQUIRED BY WARRANTY CLAIM TESTS
+        public Builder warrantyExpiration(LocalDate warrantyExpiration) {
+            record.setWarrantyExpiration(warrantyExpiration);
             return this;
         }
 
