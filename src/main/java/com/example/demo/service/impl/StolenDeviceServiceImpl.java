@@ -11,24 +11,33 @@ import java.util.Optional;
 @Service
 public class StolenDeviceServiceImpl implements StolenDeviceService {
 
-    private final StolenDeviceReportRepository repository;
+    private final StolenDeviceReportRepository stolenRepo;
 
-    public StolenDeviceServiceImpl(StolenDeviceReportRepository repository) {
-        this.repository = repository;
+    public StolenDeviceServiceImpl(StolenDeviceReportRepository stolenRepo) {
+        this.stolenRepo = stolenRepo;
     }
 
     @Override
     public StolenDeviceReport reportStolen(StolenDeviceReport report) {
-        return repository.save(report);
+        return stolenRepo.save(report);
     }
 
     @Override
     public List<StolenDeviceReport> getAllReports() {
-        return repository.findAll();
+        return stolenRepo.findAll();
     }
 
     @Override
     public Optional<StolenDeviceReport> getReportById(Long id) {
-        return repository.findById(id);
+        return stolenRepo.findById(id);
+    }
+
+    /* =========================================================
+       🔧 FIX: MISSING METHOD REQUIRED BY INTERFACE
+       ========================================================= */
+
+    @Override
+    public List<StolenDeviceReport> getReportsBySerial(String serialNumber) {
+        return stolenRepo.findBySerialNumber(serialNumber);
     }
 }
